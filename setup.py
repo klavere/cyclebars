@@ -7,7 +7,7 @@ setup(
     url='https://github.com/klavere/cyclebars',
     author='Verena Klasen',
     author_email='verena.klasen@uni-a.de',
-    license='tba',
+    license='to be announced',
     packages=['cyclebars'],
     install_requires=[
         'numpy>=1.21.2',
