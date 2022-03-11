@@ -13,7 +13,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
                      accentcolor = 'white', # custom color for accent ring
                      thetaOffset = -pi,
                      thetaDirection = -1,
-                     pieOffset = pi/2, # theta offset for pipe chart, relative to thetaOffset
+                     pieOffset = pi/2, # theta offset for pie chart, relative to thetaOffset
                      middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
                     ):
     

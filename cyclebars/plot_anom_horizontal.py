@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of n rows for n bins and m+1 columns, the first containig bin labels, the rest values of m sub series.
+def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of n rows for n bins and 4 columns, the first containig bin labels, the second containing absolute values, the third containing reference values and the forth containing anomalies with respect to those reference values.
                          ax = 0, # the axes on which the diagram is to be be plotted
                          negColor = '#404040', # custom color for negative anomalies
                          posColor = '#1a9641', # custom color for positive anomalies

@@ -12,7 +12,7 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
                 colormap = 'Set1', # the name of a colormap (see matplotlib.cm package)
                 thetaOffset = -pi,
                 thetaDirection = -1,
-                pieOffset = pi, # theta offset for pipe chart, relative to thetaOffset
+                pieOffset = pi, # theta offset for pie chart, relative to thetaOffset
                 middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
                 accentcolor = 'red', # colour for max label
                ):
