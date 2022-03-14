@@ -69,7 +69,7 @@ Plots one or two stacked circular bar charts of one or two pandas DataFrames.
 ## plot_anom_horizontal()
 Plots a stacked horizontal bar chart of anomalies saved in one or two data frames.
 
-`plot_anom_horizontal(dfA, dfB = pd.DataFrame(), ax=0, negColor='#404040', posColor='#1a9641', refColor='#BFBFBF', middleLabels=False)`
+`cyclebars.plot_anom_horizontal(dfA, dfB = pd.DataFrame(), ax=0, negColor='#404040', posColor='#1a9641', refColor='#BFBFBF', middleLabels=False)`
 
 ### **Parameters:**
 - **dfA** (pandas.DataFrame) – a dataframe consisting of n rows for n bins and 4 columns, the first containig bin labels (labeled 'bin'), the second containing absolute values (labeled 'values'), the third containing reference values (labeled 'reference') and the forth containing anomalies with respect to those reference values (labeled 'anomaly'). The data frame should be sorted.
@@ -78,7 +78,6 @@ Plots a stacked horizontal bar chart of anomalies saved in one or two data frame
 - **negColor** (string) – custom color for negative anomalies
 - **posColor** (string) – custom color for positive anomalies
 - **refColor** (string) – custom color for reference values
-- **accentcolor** (string) – custom color for accent line
 - **middleLabels** (bool) – by default, the labels appear between the bars. If set to True, the labels and ticks are plotted in the middle of each bar.
 
 ### **Code example**
@@ -86,7 +85,7 @@ Plots a stacked horizontal bar chart of anomalies saved in one or two data frame
 ## plot_anom_cyclic()
 Plots one or two stacked cyclic bar chart of anomalies saved in one or two data frames.
 
-`plot_anom_horizontal(dfA, dfB = pd.DataFrame(), ax=0, negColor='#404040', posColor='#1a9641', refColor='#BFBFBF', middleLabels=False)`
+`cyclebars.plot_anom_horizontal(dfA, dfB = pd.DataFrame(), ax=0, negColor='#404040', posColor='#1a9641', refColor='#BFBFBF', middleLabels=False)`
 
 ### **Parameters:**
 - **dfA** (pandas.DataFrame) – a dataframe consisting of n rows for n bins and 4 columns (['bin', 'value', 'reference', 'anomaly']), the first containig bin labels (labeled 'bin'), the second containing absolute values (labeled 'values'), the third containing reference values (labeled 'reference') and the forth containing anomalies with respect to those reference values (labeled 'anomaly'). The data frame should be sorted.
@@ -163,3 +162,13 @@ Plots one or two stacked cyclic bar chart of anomalies saved in one or two data 
 |21 |65176 |67083      |-1907       |
 |22 |61650 |45754.66667|15895.33333 |
 |23 |30686 |28436.83333|20000       |
+
+## ToDos for future versions
+
+- make Legends customizable
+    - switch on / off
+    - configure labels
+- change input data format?
+    - specification via column name?
+    - same requirements for both versions (anom and normal)
+- make default axes for horizontal versions fit better
