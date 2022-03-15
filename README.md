@@ -25,26 +25,6 @@ Plots a stacked horizontal bar chart of one or two pandas DataFrames.
 - **middleLabels** (bool) – by default, the labels appear between the bars. If set to True, the labels and ticks are plotted in the middle of each bar.
 - **accentcolor** (string) – the name of a colour for lines representing maxima
 
-### **Code example** HIERWEITER
-
-```
-import pandas as pd
-import cyclebars
-
-df_one = pd.DataFrame(pd.read_csv('path/to/firstdf.csv',
-                                   delimiter=';',
-                                   skipinitialspace=True,
-                                   skiprows=0))
-df_two = pd.DataFrame(pd.read_csv('path/to/firstdf.csv',
-                                   delimiter=';',
-                                   skipinitialspace=True,
-                                   skiprows=0))
-
-plot_horizontal(df_one, df_two,)
-
-```
-
-
 ## plot_cyclic()
 Plots one or two stacked circular bar charts of one or two pandas DataFrames.
 
@@ -64,8 +44,6 @@ Plots one or two stacked circular bar charts of one or two pandas DataFrames.
 - **middleLabels** (bool) – by default, the labels appear between the bars. If set to True, the labels and ticks are plotted in the middle of each bar.
 - **accentcolor** (string) – the name of a colour for maximum labels
 
-### **Code example**
-
 ## plot_anom_horizontal()
 Plots a stacked horizontal bar chart of anomalies saved in one or two data frames.
 
@@ -79,8 +57,6 @@ Plots a stacked horizontal bar chart of anomalies saved in one or two data frame
 - **posColor** (string) – custom color for positive anomalies
 - **refColor** (string) – custom color for reference values
 - **middleLabels** (bool) – by default, the labels appear between the bars. If set to True, the labels and ticks are plotted in the middle of each bar.
-
-### **Code example**
 
 ## plot_anom_cyclic()
 Plots one or two stacked cyclic bar chart of anomalies saved in one or two data frames.
@@ -100,8 +76,6 @@ Plots one or two stacked cyclic bar chart of anomalies saved in one or two data 
 - **thetaDirection** (-1 or +1) – theta direction for bar charts
 - **pieOffset** (radians) – theta offset for pie charts, relative to thetaOffset
 - **middleLabels** (bool) – by default, the labels appear between the bars. If set to True, the labels and ticks are plotted in the middle of each bar.
-
-### **Code example**
 
 ## Example data frames
 
@@ -162,13 +136,3 @@ Plots one or two stacked cyclic bar chart of anomalies saved in one or two data 
 |21 |65176 |67083      |-1907       |
 |22 |61650 |45754.66667|15895.33333 |
 |23 |30686 |28436.83333|20000       |
-
-## ToDos for future versions
-
-- make Legends customizable
-    - switch on / off
-    - configure labels
-- change input data format?
-    - specification via column name?
-    - same requirements for both versions (anom and normal)
-- make default axes for horizontal versions fit better
