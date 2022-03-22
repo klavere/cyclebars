@@ -7,9 +7,11 @@ This package currently holds four different plotting functions built on matplotl
 - [plot_anom_cyclic()](#plot_anom_cyclic())
 
 ## Installation
-Download the code and run `pip install path/to/your/folder/cyclebars`
+To install from github, run `pip install git+https://github.com/klavere/cyclebars.git#egg=cyclebars`
 
-A conda install will be available eventually...
+Instead, you may also download the code and run `pip install path/to/your/folder/cyclebars`
+
+A conda install will be available eventually.
 
 ## plot_horizontal()
 Plots a stacked horizontal bar chart of one or two pandas DataFrames.
