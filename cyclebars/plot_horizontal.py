@@ -7,7 +7,7 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
                     ax = 0, # the axes on which the diagram is to be be plotted
                     # refMax = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
                     colors = {}, # a dict of colours, indexed by the sub series names (
-                    colormap = 'Set1', # the name of a colormap (see matplotlib.cm package)
+                    colormap = 'tab10', # the name of a colormap (see matplotlib.cm package)
                     middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
                     accentcolor = 'gray', # colour for max lines
                    ):
