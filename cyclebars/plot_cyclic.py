@@ -15,6 +15,7 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
                 pieOffset = pi, # theta offset for pie chart, relative to thetaOffset
                 middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
                 accentcolor = 'red', # colour for max label
+                plot_legend = True, # if False, no legends will be plotted.
                ):
     
     singleDf = True if dfB.empty else False
@@ -223,21 +224,22 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
     
     ### legend
     #################################
-    if singleDf:
-        legendTitle = 'Cycle total: '+str(np.round(cycleTotal, decimals=2))
-        legendLabels = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNames, subSeriesTotals)]
-        patches = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNames]
-        ax.legend(patches, legendLabels, title=legendTitle, loc='upper left', bbox_to_anchor=(-0.2,1.3))
-    else:
-        legendTitleA = 'Cycle total: '+str(np.round(cycleTotalA, decimals=2))
-        legendLabelsA = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesA, subSeriesTotalsA)]
-        patchesA = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesA]
-        axA.legend(patchesA, legendLabelsA, title=legendTitleA, loc='upper left', bbox_to_anchor=(-0.2,1.3))
-                
-        legendTitleB = 'Cycle total: '+str(np.round(cycleTotalB, decimals=2))
-        legendLabelsB = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesB, subSeriesTotalsB)]
-        patchesB = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesB]
-        axB.legend(patchesB, legendLabelsB, title=legendTitleB, loc='upper left', bbox_to_anchor=(-0.2,1.3))
+    if plot_legend:
+        if singleDf:
+            legendTitle = 'Cycle total: '+str(np.round(cycleTotal, decimals=2))
+            legendLabels = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNames, subSeriesTotals)]
+            patches = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNames]
+            ax.legend(patches, legendLabels, title=legendTitle, loc='upper left', bbox_to_anchor=(-0.2,1.3))
+        else:
+            legendTitleA = 'Cycle total: '+str(np.round(cycleTotalA, decimals=2))
+            legendLabelsA = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesA, subSeriesTotalsA)]
+            patchesA = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesA]
+            axA.legend(patchesA, legendLabelsA, title=legendTitleA, loc='upper left', bbox_to_anchor=(-0.2,1.3))
+                    
+            legendTitleB = 'Cycle total: '+str(np.round(cycleTotalB, decimals=2))
+            legendLabelsB = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesB, subSeriesTotalsB)]
+            patchesB = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesB]
+            axB.legend(patchesB, legendLabelsB, title=legendTitleB, loc='upper left', bbox_to_anchor=(-0.2,1.3))
     #################################
     
     return ax if singleDf else axA, axB

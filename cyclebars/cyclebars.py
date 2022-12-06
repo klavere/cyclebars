@@ -31,10 +31,7 @@ def cyclebars(data: pd.DataFrame, # a dataframe containing all data to be plotte
               plot_cyclic_only = False, # if True, only a cyclic plot is returned. Only set True if plot_horizontal_only is False!
               plot_horizontal_only = False, # if True, only a horizontal plot is given. Only set True if plot_cyclic_only is False!
               
-              # horizontal_legend_a = True # if False, the legend for the horizontal plot (a) is omitted.
-              # horizontal_legend_b = True # if False, the legend for the horizontal plot (b) is omitted.
-              # cyclic_legend_a = True # if False, the legend for the cyclic plot (a) is omitted.
-              # cyclic_legend_b = True # if False, the legend for the cyclic plot (b) is omitted.
+              plot_legends = True, # if False, the legend or legends will not be plotted.
              ):
     
     ############################################
@@ -99,32 +96,34 @@ def cyclebars(data: pd.DataFrame, # a dataframe containing all data to be plotte
     
     if not plot_horizontal_only:
         cyclic_plots = plot_cyclic(
-            df_a,
-            df_b,
-            ax_cyclic_a,
-            ax_cyclic_b,
-            ref_total,
-            colors,
-            colormap,
-            theta_offset,
-            theta_direction,
-            pie_offset,
-            middle_labels,
-            accentcolor
+            dfA = df_a,
+            dfB = df_b,
+            axA = ax_cyclic_a,
+            axB = ax_cyclic_b,
+            refTotal = ref_total,
+            colors = colors,
+            colormap = colormap,
+            thetaOffset = theta_offset,
+            thetaDirection = theta_direction,
+            pieOffset = pie_offset,
+            middleLabels = middle_labels,
+            accentcolor = accentcolor,
+            plot_legend = plot_legends,
         )
         axes.append(cyclic_plots)
     
     if not plot_cyclic_only:
         horizontal_plot = plot_horizontal(
-            df_a,
-            df_b,
-            ax_horizontal,
+            dfA = df_a,
+            dfB = df_b,
+            ax = ax_horizontal,
             # ref_max_a,
             # ref_max_b,
-            colors,
-            colormap,
-            middle_labels,
-            accentcolor
+            colors = colors,
+            colormap = colormap,
+            middleLabels = middle_labels,
+            accentcolor = accentcolor,
+            plot_legend = plot_legends,
         )
         axes.append(horizontal_plot)
     

@@ -10,6 +10,7 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
                     colormap = 'tab10', # the name of a colormap (see matplotlib.cm package)
                     middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
                     accentcolor = 'gray', # colour for max lines
+                    plot_legend = True, # if False, no legends will be plotted.
                    ):
 
     singleDf = True if dfB.empty else False
@@ -166,45 +167,46 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
 
     ### legends
     #################################
-    if singleDf:
-        legendTitle = 'Series total: '+str(np.round(cycleTotal, decimals=2))
-        legendLabels = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNames, subSeriesTotals)]
-        patches = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNames]
-        axtwin = ax.twinx()
-        axtwin.set_yticks([])
-        axtwin.set_yticklabels([])
-        for spine in ['left','right','top','bottom']:
-            axtwin.spines[spine].set_visible(False)
-        axtwin.legend(patches, legendLabels,
-                  title=legendTitle,
-                  loc='lower center',
-                  bbox_to_anchor=(0.5,-0.1),
-                  ncol=len(subSeriesNames))
-    else:
-        ### legendA
-        legendTitleA = 'Series total: '+str(np.round(cycleTotalA, decimals=2))
-        legendLabelsA = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesA, subSeriesTotalsA)]
-        patches = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesA]
-        ax.legend(patches, legendLabelsA,
-                  title=legendTitleA,
-                  loc='upper center',
-                  bbox_to_anchor=(0.5,1.1),
-                  ncol=len(subSeriesNamesA))
+    if plot_legend:
+        if singleDf:
+            legendTitle = 'Series total: '+str(np.round(cycleTotal, decimals=2))
+            legendLabels = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNames, subSeriesTotals)]
+            patches = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNames]
+            axtwin = ax.twinx()
+            axtwin.set_yticks([])
+            axtwin.set_yticklabels([])
+            for spine in ['left','right','top','bottom']:
+                axtwin.spines[spine].set_visible(False)
+            axtwin.legend(patches, legendLabels,
+                    title=legendTitle,
+                    loc='lower center',
+                    bbox_to_anchor=(0.5,-0.1),
+                    ncol=len(subSeriesNames))
+        else:
+            ### legendA
+            legendTitleA = 'Series total: '+str(np.round(cycleTotalA, decimals=2))
+            legendLabelsA = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesA, subSeriesTotalsA)]
+            patches = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesA]
+            ax.legend(patches, legendLabelsA,
+                    title=legendTitleA,
+                    loc='upper center',
+                    bbox_to_anchor=(0.5,1.1),
+                    ncol=len(subSeriesNamesA))
 
-        ### legendB
-        legendTitleB = 'Series total: '+str(np.round(cycleTotalB, decimals=2))
-        legendLabelsB = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesB, subSeriesTotalsB)]
-        patches = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesB]
-        axtwin = ax.twinx()
-        for spine in ['left','right','top','bottom']:
-            axtwin.spines[spine].set_visible(False)
-        axtwin.set_yticks([])
-        axtwin.set_yticklabels([])
-        axtwin.legend(patches, legendLabelsB,
-                      title=legendTitleB,
-                      loc='lower center',
-                      bbox_to_anchor=(0.5,-0.1),
-                      ncol=len(subSeriesNamesB))
+            ### legendB
+            legendTitleB = 'Series total: '+str(np.round(cycleTotalB, decimals=2))
+            legendLabelsB = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesB, subSeriesTotalsB)]
+            patches = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesB]
+            axtwin = ax.twinx()
+            for spine in ['left','right','top','bottom']:
+                axtwin.spines[spine].set_visible(False)
+            axtwin.set_yticks([])
+            axtwin.set_yticklabels([])
+            axtwin.legend(patches, legendLabelsB,
+                        title=legendTitleB,
+                        loc='lower center',
+                        bbox_to_anchor=(0.5,-0.1),
+                        ncol=len(subSeriesNamesB))
     #################################
     
     return ax
