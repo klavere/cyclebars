@@ -225,18 +225,22 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
     
     ### legend
     #################################
-    patches = [plt.Rectangle((0,0),1,1, color=refColor),
-               plt.Rectangle((0,0),1,1, edgecolor=PosNegCol[True], facecolor=PosNegCol[False], linewidth=2.5)]
+    patches = [plt.Rectangle((0,0),1,1, edgecolor=PosNegCol[True], facecolor=PosNegCol[False], linewidth=2.5),
+               plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False),
+               plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False)]
     if singleDf:
-        legendLabels = ['Values: ' + str(np.round(totalValues, decimals=2))  +' total',
-                        'Anomalies: ' + str(np.round(totalAnomaly, decimals=2))  +' total']
+        legendLabels = ['Anomalies: ' + str(np.round(totalAnomaly, decimals=2)) + ' total',
+                        'Values: ' + str(np.round(totalValues, decimals=2)) +' total',
+                        str(100+(np.round((totalAnomaly/totalReference)*100, decimals=2))) + '% of reference values']
         ax.legend(patches, legendLabels, loc='upper left', bbox_to_anchor=(-0.2,1.1))
     else:
-        legendLabelsA = ['Values: ' + str(np.round(totalValuesA, decimals=2))  +' total',
-                         'Anomalies: ' + str(np.round(totalAnomalyA, decimals=2))  +' total']
+        legendLabelsA = ['Anomalies: ' + str(np.round(totalAnomalyA, decimals=2)) + ' total',
+                         'Values: ' + str(np.round(totalValuesA, decimals=2)) + ' total',
+                         str(100+(np.round((totalAnomalyA/totalReferenceA)*100, decimals=2))) + '% of reference values']
         axA.legend(patches, legendLabelsA, loc='upper left', bbox_to_anchor=(-0.2,1.1))
-        legendLabelsB = ['Values: ' + str(np.round(totalValuesB, decimals=2))  +' total',
-                         'Anomalies: ' + str(np.round(totalAnomalyB, decimals=2))  +' total']
+        legendLabelsB = ['Anomalies: ' + str(np.round(totalAnomalyB, decimals=2)) + ' total',
+                         'Values: ' + str(np.round(totalValuesB, decimals=2)) + ' total',
+                         str(100+(np.round((totalAnomalyB/totalReferenceB)*100, decimals=2))) + '% of reference values']
         axB.legend(patches, legendLabelsB, loc='upper left', bbox_to_anchor=(-0.2,1.1))
     #################################
     
