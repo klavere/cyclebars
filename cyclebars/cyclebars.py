@@ -3,8 +3,8 @@ from typing import List
 from math import pi
 import matplotlib.pyplot as plt
 
-from plot_cyclic import plot_cyclic
-from plot_horizontal import plot_horizontal
+from .plot_cyclic import plot_cyclic
+from .plot_horizontal import plot_horizontal
 
 def cyclebars(data: pd.DataFrame, # a dataframe containing all data to be plotted
               labels: str = None, # the name of the column containig the labels for the bins. default will be the first column of your dataframe.

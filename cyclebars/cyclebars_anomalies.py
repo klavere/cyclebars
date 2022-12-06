@@ -2,8 +2,8 @@ import pandas as pd
 from math import pi
 import matplotlib.pyplot as plt
 
-from plot_anom_cyclic import plot_anom_cyclic
-from plot_anom_horizontal import plot_anom_horizontal
+from .plot_anom_cyclic import plot_anom_cyclic
+from .plot_anom_horizontal import plot_anom_horizontal
 
 def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to be plotted
                         labels: str = None, # the name of the column containig the labels for the bins. Defaults to column 0 of your dataframe.
