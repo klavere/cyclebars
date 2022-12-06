@@ -168,7 +168,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
     
     ### legends
     #################################
-    patches = [plt.Rectangle((0,0),1,1, color=refColor),
+    patches = [plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False),
                plt.Rectangle((0,0),1,1, edgecolor=PosNegCol[True], facecolor=PosNegCol[False], linewidth=2.5)]
     if singleDf:
         legendLabels = ['Values: ' + str(np.round(totalValues, decimals=2))  +' total',
