@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='cyclebars',
-    version='0',
+    version='0.1',
     description='A package containing four plotting functions for (potentially) cyclic time series with anomalies.',
     url='https://github.com/klavere/cyclebars',
     author='Verena Klasen',
