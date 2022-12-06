@@ -15,6 +15,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
                      thetaDirection = -1,
                      pieOffset = pi/2, # theta offset for pie chart, relative to thetaOffset
                      middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
+                     plot_legend = True, # if False, no legends will be plotted.
                     ):
     
     ### set up axes if not given
@@ -225,23 +226,24 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
     
     ### legend
     #################################
-    patches = [plt.Rectangle((0,0),1,1, edgecolor=PosNegCol[True], facecolor=PosNegCol[False], linewidth=2.5),
-               plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False),
-               plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False)]
-    if singleDf:
-        legendLabels = ['Anomalies: ' + str(np.round(totalAnomaly, decimals=2)) + ' total',
-                        'Values: ' + str(np.round(totalValues, decimals=2)) +' total',
-                        str(100+(np.round((totalAnomaly/totalReference)*100, decimals=2))) + '% of reference values']
-        ax.legend(patches, legendLabels, loc='upper left', bbox_to_anchor=(-0.2,1.1))
-    else:
-        legendLabelsA = ['Anomalies: ' + str(np.round(totalAnomalyA, decimals=2)) + ' total',
-                         'Values: ' + str(np.round(totalValuesA, decimals=2)) + ' total',
-                         str(100+(np.round((totalAnomalyA/totalReferenceA)*100, decimals=2))) + '% of reference values']
-        axA.legend(patches, legendLabelsA, loc='upper left', bbox_to_anchor=(-0.2,1.1))
-        legendLabelsB = ['Anomalies: ' + str(np.round(totalAnomalyB, decimals=2)) + ' total',
-                         'Values: ' + str(np.round(totalValuesB, decimals=2)) + ' total',
-                         str(100+(np.round((totalAnomalyB/totalReferenceB)*100, decimals=2))) + '% of reference values']
-        axB.legend(patches, legendLabelsB, loc='upper left', bbox_to_anchor=(-0.2,1.1))
+    if plot_legend:
+        patches = [plt.Rectangle((0,0),1,1, edgecolor=PosNegCol[True], facecolor=PosNegCol[False], linewidth=2.5),
+                plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False),
+                plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False)]
+        if singleDf:
+            legendLabels = ['Anomalies: ' + str(np.round(totalAnomaly, decimals=2)) + ' total',
+                            'Values: ' + str(np.round(totalValues, decimals=2)) +' total',
+                            str(100+(np.round((totalAnomaly/totalReference)*100, decimals=2))) + '% of reference values']
+            ax.legend(patches, legendLabels, loc='upper left', bbox_to_anchor=(-0.2,1.1))
+        else:
+            legendLabelsA = ['Anomalies: ' + str(np.round(totalAnomalyA, decimals=2)) + ' total',
+                            'Values: ' + str(np.round(totalValuesA, decimals=2)) + ' total',
+                            str(100+(np.round((totalAnomalyA/totalReferenceA)*100, decimals=2))) + '% of reference values']
+            axA.legend(patches, legendLabelsA, loc='upper left', bbox_to_anchor=(-0.2,1.1))
+            legendLabelsB = ['Anomalies: ' + str(np.round(totalAnomalyB, decimals=2)) + ' total',
+                            'Values: ' + str(np.round(totalValuesB, decimals=2)) + ' total',
+                            str(100+(np.round((totalAnomalyB/totalReferenceB)*100, decimals=2))) + '% of reference values']
+            axB.legend(patches, legendLabelsB, loc='upper left', bbox_to_anchor=(-0.2,1.1))
     #################################
     
     return ax if singleDf else axA, axB

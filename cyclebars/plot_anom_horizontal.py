@@ -9,6 +9,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
                          refColor = '#BFBFBF', # custom color for reference values
                          # accentcolor = 'gray', # custom color for accent line
                          middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
+                         plot_legend = True, # if False, no legends will be plotted.
                         ):
 
     ### set up axes if not given
@@ -168,44 +169,45 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
     
     ### legends
     #################################
-    patches = [plt.Rectangle((0,0),1,1, edgecolor=PosNegCol[True], facecolor=PosNegCol[False], linewidth=2.5),
-               plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False),
-               plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False)]
-    if singleDf:
-        legendLabels = ['Anomalies: ' + str(np.round(totalAnomaly, decimals=2)) + ' total',
-                        'Values: ' + str(np.round(totalValues, decimals=2)) + ' total',
-                        str(100+(np.round((totalAnomaly/totalReference)*100, decimals=2))) + '% of reference values']
-        axtwin = ax.twinx()
-        axtwin.set_yticks([])
-        axtwin.set_yticklabels([])
-        for spine in ['left','right','top','bottom']:
-            axtwin.spines[spine].set_visible(False)
-        axtwin.legend(patches, legendLabels,
-                      loc='lower center',
-                      bbox_to_anchor=(0.5,-0.1),
-                      ncol=3)
-    else:
-        ### legendA
-        legendLabelsA = ['Anomalies: ' + str(np.round(totalAnomalyA, decimals=2)) + ' total',
-                         'Values: ' + str(np.round(totalValuesA, decimals=2)) + ' total',
-                         str(100+(np.round((totalAnomalyA/totalReferenceA)*100, decimals=2))) + '% of reference values']
-        ax.legend(patches, legendLabelsA,
-                  loc='upper center',
-                  bbox_to_anchor=(0.5,1.1),
-                  ncol=3)
-        ### legendB
-        legendLabelsB = ['Anomalies: ' + str(np.round(totalAnomalyB, decimals=2)) + ' total',
-                         'Values: ' + str(np.round(totalValuesB, decimals=2)) + ' total',
-                         str(100+(np.round((totalAnomalyB/totalReferenceB)*100, decimals=2))) + '% of reference values']
-        axtwin = ax.twinx()
-        for spine in ['left','right','top','bottom']:
-            axtwin.spines[spine].set_visible(False)
-        axtwin.set_yticks([])
-        axtwin.set_yticklabels([])
-        axtwin.legend(patches, legendLabelsB,
-                      loc='lower center',
-                      bbox_to_anchor=(0.5,-0.1),
-                      ncol=3)
+    if plot_legend:
+        patches = [plt.Rectangle((0,0),1,1, edgecolor=PosNegCol[True], facecolor=PosNegCol[False], linewidth=2.5),
+                plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False),
+                plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False)]
+        if singleDf:
+            legendLabels = ['Anomalies: ' + str(np.round(totalAnomaly, decimals=2)) + ' total',
+                            'Values: ' + str(np.round(totalValues, decimals=2)) + ' total',
+                            str(100+(np.round((totalAnomaly/totalReference)*100, decimals=2))) + '% of reference values']
+            axtwin = ax.twinx()
+            axtwin.set_yticks([])
+            axtwin.set_yticklabels([])
+            for spine in ['left','right','top','bottom']:
+                axtwin.spines[spine].set_visible(False)
+            axtwin.legend(patches, legendLabels,
+                        loc='lower center',
+                        bbox_to_anchor=(0.5,-0.1),
+                        ncol=3)
+        else:
+            ### legendA
+            legendLabelsA = ['Anomalies: ' + str(np.round(totalAnomalyA, decimals=2)) + ' total',
+                            'Values: ' + str(np.round(totalValuesA, decimals=2)) + ' total',
+                            str(100+(np.round((totalAnomalyA/totalReferenceA)*100, decimals=2))) + '% of reference values']
+            ax.legend(patches, legendLabelsA,
+                    loc='upper center',
+                    bbox_to_anchor=(0.5,1.1),
+                    ncol=3)
+            ### legendB
+            legendLabelsB = ['Anomalies: ' + str(np.round(totalAnomalyB, decimals=2)) + ' total',
+                            'Values: ' + str(np.round(totalValuesB, decimals=2)) + ' total',
+                            str(100+(np.round((totalAnomalyB/totalReferenceB)*100, decimals=2))) + '% of reference values']
+            axtwin = ax.twinx()
+            for spine in ['left','right','top','bottom']:
+                axtwin.spines[spine].set_visible(False)
+            axtwin.set_yticks([])
+            axtwin.set_yticklabels([])
+            axtwin.legend(patches, legendLabelsB,
+                        loc='lower center',
+                        bbox_to_anchor=(0.5,-0.1),
+                        ncol=3)
     #################################
     
     return ax
