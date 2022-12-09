@@ -5,7 +5,8 @@ from matplotlib import cm
 
 def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of n rows for n bins and m+1 columns, the first containig bin labels, the rest values of m sub series.
                     ax = 0, # the axes on which the diagram is to be be plotted
-                    # refMax = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
+                    refMaxA = None, # a reference maximum, determines the limits on the upper horizontal axis
+                    refMaxB = None, # a reference maximum, determines the limits on the lower horizontal axis
                     colors = {}, # a dict of colours, indexed by the sub series names (
                     colormap = 'tab10', # the name of a colormap (see matplotlib.cm package)
                     middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
@@ -54,7 +55,7 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
         maxBinTotal = max(binTotals) # Max bin total
         maxBinIndex = binTotals.index(maxBinTotal) # index of bin with max bin total
         maxBinName = binNames[maxBinIndex] # name of bin with max bin total (only first occurence if there are more than one)
-        base = -.03*(maxBinTotal)
+        base = -.03*(maxBinTotal if not refMaxA else refMaxA)
     else:
         ### for dfA
         #############################
@@ -84,7 +85,7 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
         ### joint max stuff (if necessary)
         ###
         maxBinTotal = max(maxBinTotalA, maxBinTotalB)
-        base = -.03*(maxBinTotalA+maxBinTotalB)
+        base = -.03*((maxBinTotalA if not refMaxA else refMaxA)+(maxBinTotalB if not refMaxB else refMaxB))        
     #################################
     
     ### set up plot
@@ -165,6 +166,17 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
         ax.axhline(y=base-maxBinTotalB, color=accentcolor, linewidth=1)
     #################################
 
+    ### adapt plot scale if ref_max_a (and b) are given
+    #################################
+    if refMaxA:
+        ax.set_ylim(top=refMaxA)
+        ax.axhline(y=refMaxA, color='gray', linewidth=2)
+    if not singleDf:
+        if refMaxB:
+            ax.set_ylim(bottom=base-refMaxB)
+            ax.axhline(y=base-refMaxB, color='gray', linewidth=2)
+    #################################
+    
     ### legends
     #################################
     if plot_legend:
