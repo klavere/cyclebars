@@ -13,6 +13,8 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
                         reference_values_b: str = None, # the name of the column containing the reference values (b). Anomalies will be calculated as the difference between values and reference_values.
                         
                         ref_total: float = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
+                        ref_max_a: float = None, # a reference maximum, to determine the limits of the upper axis and the radial scale
+                        ref_max_b: float = None, # a reference maximum, to determine the limits of the lower axis and the radial scale
                         
                         ax_cyclic_a: plt.Axes = 0, # the axes on which the cyclic diagram showing sub series a is to be be plotted
                         ax_cyclic_b: plt.Axes = 0, # the axes on which the cyclic diagram showing sub series b is to be be plotted
@@ -112,6 +114,8 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
             axA = ax_cyclic_a,
             axB = ax_cyclic_b,
             refTotal = ref_total,
+            refMaxA = ref_max_a,
+            refMaxB = ref_max_b,
             negColor = color_negative_anomalies,
             posColor = color_positive_anomalies,
             refColor = color_reference_values,
@@ -129,6 +133,8 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
             dfA = df_a,
             dfB = df_b,
             ax = ax_horizontal,
+            refMaxA = ref_max_a,
+            refMaxB = ref_max_b,
             negColor = color_negative_anomalies,
             posColor = color_positive_anomalies,
             refColor = color_reference_values,

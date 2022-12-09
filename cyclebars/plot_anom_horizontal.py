@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of n rows for n bins and 4 columns, the first containig bin labels, the second containing absolute values, the third containing reference values and the forth containing anomalies with respect to those reference values.
                          ax = 0, # the axes on which the diagram is to be be plotted
+                         refMaxA = None, # a reference maximum, determines the limits on the upper horizontal axis
+                         refMaxB = None, # a reference maximum, determines the limits on the lower horizontal axis
                          negColor = '#404040', # custom color for negative anomalies
                          posColor = '#1a9641', # custom color for positive anomalies
                          refColor = '#BFBFBF', # custom color for reference values
@@ -40,7 +42,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         maxValue = dfA.value.max()
         maxReference = dfA.reference.max()
         maxBar = max(maxValue, maxReference)
-        base = -.03*maxBar
+        base = -.03*(maxBar if not refMaxA else refMaxA)
         ###
         maxAnomaly = dfA.anomaly.max()
         maxAnomalyIndex = list(dfA.anomaly).index(maxAnomaly)
@@ -104,7 +106,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         ### joint max stuff (if necessary)
         ###
         maxBar = max(maxBarA, maxBarB)
-        base = -.03*(maxBarA+maxBarB)
+        base = -.03*((maxBarA if not refMaxA else refMaxA)+(maxBarB if not refMaxB else refMaxB))
     #################################
         
     ### set up plot
@@ -167,6 +169,17 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         ax.axhline(y=maxBarA, color='gray', linewidth=1)
         ax.axhline(y=base-maxBarB, color='gray', linewidth=2)
         ax.axhline(y=.5*base, color=accentcolor, linewidth=12, zorder=0)
+    #################################
+    
+    ### adapt plot scale if ref_max_a (and b) are given
+    #################################
+    if refMaxA:
+        ax.set_ylim(top=refMaxA)
+        ax.axhline(y=refMaxA, color='gray', linewidth=2)
+    if not singleDf:
+        if refMaxB:
+            ax.set_ylim(bottom=base-refMaxB)
+            ax.axhline(y=base-refMaxB, color='gray', linewidth=2)
     #################################
     
     ### legends
