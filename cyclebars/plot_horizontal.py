@@ -54,7 +54,7 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
         maxBinTotal = max(binTotals) # Max bin total
         maxBinIndex = binTotals.index(maxBinTotal) # index of bin with max bin total
         maxBinName = binNames[maxBinIndex] # name of bin with max bin total (only first occurence if there are more than one)
-        base = -.04*(maxBinTotal)
+        base = -.03*(maxBinTotal)
     else:
         ### for dfA
         #############################
@@ -84,7 +84,7 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
         ### joint max stuff (if necessary)
         ###
         maxBinTotal = max(maxBinTotalA, maxBinTotalB)
-        base = -.04*(maxBinTotalA+maxBinTotalB)
+        base = -.03*(maxBinTotalA+maxBinTotalB)
     #################################
     
     ### set up plot
