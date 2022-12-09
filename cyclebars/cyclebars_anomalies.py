@@ -132,8 +132,8 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
             negColor = color_negative_anomalies,
             posColor = color_positive_anomalies,
             refColor = color_reference_values,
+            accentcolor = accentcolor,
             middleLabels = middle_labels,
-            # accentcolor, # to be integrated...
             plot_legend = plot_legends,
         )
         axes.append(horizontal_plot)

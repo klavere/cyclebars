@@ -7,7 +7,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
                          negColor = '#404040', # custom color for negative anomalies
                          posColor = '#1a9641', # custom color for positive anomalies
                          refColor = '#BFBFBF', # custom color for reference values
-                         # accentcolor = 'gray', # custom color for accent line
+                         accentcolor = 'white', # custom color for accent line
                          middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
                          plot_legend = True, # if False, no legends will be plotted.
                         ):
@@ -40,7 +40,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         maxValue = dfA.value.max()
         maxReference = dfA.reference.max()
         maxBar = max(maxValue, maxReference)
-        base = -.04*maxBar
+        base = -.03*maxBar
         ###
         maxAnomaly = dfA.anomaly.max()
         maxAnomalyIndex = list(dfA.anomaly).index(maxAnomaly)
@@ -104,7 +104,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         ### joint max stuff (if necessary)
         ###
         maxBar = max(maxBarA, maxBarB)
-        base = -.04*(maxBarA+maxBarB)
+        base = -.03*(maxBarA+maxBarB)
     #################################
         
     ### set up plot
@@ -158,6 +158,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         ax.set_yticks([maxBar, .75*maxBar, .5*maxBar, .25*maxBar, 0])
         ax.set_yticklabels([str(int(maxBar)),'','','',0], color='gray', size=9)
         ax.axhline(y=maxBar, color='gray', linewidth=1)
+        ax.axhline(y=.5*base, color=accentcolor, linewidth=12, zorder=0)
     else:
         negticks = [base, base-.25*maxBarB, base-.5*maxBarB, base-.75*maxBarB, base-maxBarB]
         negticklabels = [0,'','','',str(int(maxBarB))]
@@ -165,6 +166,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         ax.set_yticklabels([str(int(maxBarA)),'','','',0] + negticklabels, color='gray', size=9)
         ax.axhline(y=maxBarA, color='gray', linewidth=1)
         ax.axhline(y=base-maxBarB, color='gray', linewidth=2)
+        ax.axhline(y=.5*base, color=accentcolor, linewidth=12, zorder=0)
     #################################
     
     ### legends
