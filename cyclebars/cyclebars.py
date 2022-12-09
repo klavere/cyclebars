@@ -25,8 +25,8 @@ def cyclebars(data: pd.DataFrame, # a dataframe containing all data to be plotte
               pie_offset = pi, # theta offset for pie chart, relative to thetaOffset
               
               ref_total: float = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
-              ref_max_a: float = None, # a reference maximum, to determine the limits of the upper axis
-              ref_max_b: float = None, # a reference maximum, to determine the limits of the lower axis
+              ref_max_a: float = None, # a reference maximum, to determine the limits of the upper axis and the radial scale
+              ref_max_b: float = None, # a reference maximum, to determine the limits of the lower axis and the radial scale
               
               plot_cyclic_only = False, # if True, only a cyclic plot is returned. Only set True if plot_horizontal_only is False!
               plot_horizontal_only = False, # if True, only a horizontal plot is given. Only set True if plot_cyclic_only is False!

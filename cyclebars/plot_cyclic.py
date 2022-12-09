@@ -240,7 +240,7 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
                                       fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
         if refMaxB:
             axB.set_ylim(top=refMaxB)
-            axB.add_artist(plt.Circle((0,0), base+refMaxA, transform=axB.transData._b,
+            axB.add_artist(plt.Circle((0,0), base+refMaxB, transform=axB.transData._b,
                                       fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
     #################################
     

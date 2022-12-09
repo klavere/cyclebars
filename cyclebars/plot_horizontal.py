@@ -85,7 +85,7 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
         ### joint max stuff (if necessary)
         ###
         maxBinTotal = max(maxBinTotalA, maxBinTotalB)
-        base = -.03*((maxBinTotalA if not refMaxA else refMaxA)+(maxBinTotalB if not refMaxB else refMaxB))        
+        base = -.03*((maxBinTotalA if not refMaxA else refMaxA)+(maxBinTotalB if not refMaxB else refMaxB))
     #################################
     
     ### set up plot
