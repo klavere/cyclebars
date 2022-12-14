@@ -131,7 +131,7 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
             dfA = df_a,
             dfB = df_b,
             ax = ax_horizontal,
-            refMaxA = ref_maximum,
+            refMax = ref_maximum,
             negColor = color_negative_anomalies,
             posColor = color_positive_anomalies,
             refColor = color_reference_values,
