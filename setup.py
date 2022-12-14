@@ -2,9 +2,9 @@ from setuptools import setup
 
 setup(
     name='cyclebars',
-    version='0',
+    version='0.1',
     description='A package containing four plotting functions for (potentially) cyclic time series with anomalies.',
-    url='https://github.com/klavere/cyclebars',
+    url='https://github.com/klavere/cyclebars/tree/version_1',
     author='Verena Klasen',
     author_email='verena.klasen@uni-a.de',
     license='to be announced',

@@ -1,140 +1,156 @@
 # Cyclebars
-This package currently holds four different plotting functions built on matplotlib and pandas
 
-- [plot_horizontal()](#plot_horizontal())
-- [plot_cyclic()](#plot_cyclic())
-- [plot_anom_horizontal()](#plot_anom_horizontal())
-- [plot_anom_cyclic()](#plot_anom_cyclic())
+This package holds two different plotting functions built on matplotlib and pandas.
+Both functions return a set of horizontal and circular bar charts.
+They were developed for time-series of origin-destination (OD) data, i.e. data with an inherent bidirectionality and therefore also feature visual duality:
+horizontal charts can be split horizontally (bars go up and down) and two circular charts are juxtaposed correspondingly.
+`cyclebars()` is made for a set of time-series which are plotted as stacked bars.
+`cyclebars_anomalies()` is made for analizing anomalies within a given time-series. Bars representing positive and negative anomalies are plotted on top of bars representing reference values.
 
 ## Installation
+
 To install from github, run `pip install git+https://github.com/klavere/cyclebars.git#egg=cyclebars`
 
 Instead, you may also download the code and run `pip install path/to/your/folder/cyclebars`
 
 A conda install will be available eventually.
 
-## plot_horizontal()
-Plots a stacked horizontal bar chart of one or two pandas DataFrames.
+## cyclebars()
 
-`cyclebars.plot_horizontal(dfA, dfB=pd.DataFrame(), ax=0, colors={}, colormap='Set1', middleLabels=False, accentcolor='gray')`
+Returns a set of stacked bar charts in circular and horizontal manner.
 
-### **Parameters:**
-- **dfA** (pandas.DataFrame) – a dataframe consisting of n rows for n bins and m+1 columns, the first containing bin labels, the others containing values of m sub series.
-- **dfB** (pandas.DataFrame) – optional second data frame with n rows and k+1 columns, the first containing bin labels, the others containing values of k sub series. The sub series can but do not need to be identical with those of the first data frame.
-- **ax** (matplotlib.Axes) – the axes on which the diagram is to be plotted
-- **colors** (dict) – a dictionary of colours, indexed by the names of all sub series
-- **colormap** (string) – the name of a colormap, see https://matplotlib.org/stable/gallery/color/colormap_reference.html
-- **middleLabels** (bool) – by default, the labels appear between the bars. If set to True, the labels and ticks are plotted in the middle of each bar.
-- **accentcolor** (string) – the name of a colour for lines representing maxima
-
-## plot_cyclic()
-Plots one or two stacked circular bar charts of one or two pandas DataFrames.
-
-`cyclebars.plot_cyclic(dfA, dfB=pd.DataFrame(), axA=0, axB=0, refTotal=0, colors={}, colormap='Set1', thetaOffset=-pi, thetaDirection=-1, pieOffset=pi, middleLabels=False, accentcolor='red')`
+`cyclebars(data, labels=None, columns_a=None, columns_b=None, ax_cyclic_a=0, ax_cyclic_b=0, ax_horizontal=0, colors={}, colormap='tab10', accentcolor='gray', middle_labels=False, theta_offset=-pi, theta_direction=-1, pie_offset=pi, ref_total=0, ref_maximum=None, plot_cyclic_only=False, plot_horizontal_only=False, plot_legends=True)`
 
 ### **Parameters:**
-- **dfA** (pandas.DataFrame) – a dataframe consisting of n rows for n bins and m+1 columns, the first containing bin labels, the others containing values of m sub series.
-- **dfB** (pandas.DataFrame) – optional second data frame with n rows and k+1 columns, the first containing bin labels, the others containing values of k sub series. The sub series can but do not need to be identical with those of the first data frame.
-- **axA** (matplotlib.Axes) – the axes on which the diagram A is to be plotted
-- **axB** (matplotlib.Axes) – the axes on which the diagram B is to be plotted
-- **refTotal** (number) – a global maximum for reference. It determines the size of the pie chart in the middle of the plot.
-- **colors** (dict) – a dictionary of colours, indexed by the names of all sub series
-- **colormap** (string) – the name of a colormap, see https://matplotlib.org/stable/gallery/color/colormap_reference.html
-- **thetaOffset** (radians) – theta offset for bar chart
-- **thetaDirection** (-1 or +1) – theta direction for bar chart
-- **pieOffset** (radians) – theta offset for pie chart, relative to thetaOffset
-- **middleLabels** (bool) – by default, the labels appear between the bars. If set to True, the labels and ticks are plotted in the middle of each bar.
-- **accentcolor** (string) – the name of a colour for maximum labels
 
-## plot_anom_horizontal()
-Plots a stacked horizontal bar chart of anomalies saved in one or two data frames.
+* **data** (pandas.DataFrame) - A dataframe containing all data to be plotted. The data frame should be sorted.
 
-`cyclebars.plot_anom_horizontal(dfA, dfB = pd.DataFrame(), ax=0, negColor='#404040', posColor='#1a9641', refColor='#BFBFBF', middleLabels=False)`
+optional:
+
+* **labels** (string) - The name of the column containig the labels for the bins. By default, the first column of your dataframe is taken.
+* **columns_a** (List[string]) - A list of column names for n sub series. If none is given, `data.columns[1:]` are taken.
+* **columns_b** (List[string]) - A list of column names for m sub series. If none is given, the plot will only feature one set of sub series, defined by `columns_a`.
+
+* **ax_cyclic_a** (matplotlib.pyplot.Axes) - The axes on which the cyclic diagram showing sub series a is to be be plotted. The projection has to be polar.
+* **ax_cyclic_b** (matplotlib.pyplot.Axes) - The axes on which the cyclic diagram showing sub series b is to be be plotted. The projection has to be polar.
+* **ax_horizontal** (matplotlib.pyplot.Axes) - The axes on which the horizontal diagram is to be be plotted.
+
+* **colors** (dict) - A dict of colours, indexed by the sub series column names.
+* **colormap** (string) - The name of a colormap (please refer to the [`matplotlib.cm` package](https://matplotlib.org/stable/gallery/color/colormap_reference.html))
+* **accentcolor** (string) - A colour for maximum lines and labels
+
+* **middle_labels** (boolean) - Default: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
+* **theta_offset** (radians) – Theta offset for bar chart.
+* **theta_direction** (-1 or +1) – Theta direction for bar chart.
+* **pie_offset** (radians) – Theta offset for pie chart, relative to theta_offset.
+
+* **ref_total** (float) - A global maximum for reference. It determines the size of the pie chart in the middle of the plot.
+* **ref_maximum** (float) - A global reference maximum, determines the scale of the bar plots.
+
+* **plot_cyclic_only** (boolean) - If set `True`, only cyclic plots are returned. Only set `True` if `plot_horizontal_only` is `False`!
+* **plot_horizontal_only** (boolean) - If set `True`, only horizontal plots are returned. Only set `True` if `plot_cyclic_only` is `False`!
+* **plot_legends** (boolean) - If set `False`, no legends will be plotted.
+
+## cyclebars_anomalies()
+
+Returns a set of bar charts showing anomalies in circular and horizontal manner.
+
+`cyclebars_anomalies(data, labels=None, values_a=None, reference_values_a=None, values_b=None, reference_values_b=None, ref_total=0, ref_maximum=None, ax_cyclic_a=0, ax_cyclic_b=0, ax_horizontal=0, color_negative_anomalies='#404040', color_positive_anomalies='#1a9641', color_reference_values='#BFBFBF', accentcolor='white', middle_labels=False, theta_offset=-pi, theta_direction=-1, pie_offset=pi/2, plot_cyclic_only=False, plot_horizontal_only=False, plot_legends=True`
 
 ### **Parameters:**
-- **dfA** (pandas.DataFrame) – a dataframe consisting of n rows for n bins and 4 columns, the first containig bin labels (labeled 'bin'), the second containing absolute values (labeled 'values'), the third containing reference values (labeled 'reference') and the forth containing anomalies with respect to those reference values (labeled 'anomaly'). The data frame should be sorted.
-- **dfB** (pandas.DataFrame) –  an optional second dataframe consisting of n rows for n bins and 4 columns, the first containig bin labels (labeled 'bin'), the second containing absolute values (labeled 'values'), the third containing reference values (labeled 'reference') and the forth containing anomalies with respect to those reference values (labeled 'anomaly'). The data frame should be sorted.
-- **ax** (matplotlib.Axes) – the axes on which the diagram is to be be plotted
-- **negColor** (string) – custom color for negative anomalies
-- **posColor** (string) – custom color for positive anomalies
-- **refColor** (string) – custom color for reference values
-- **middleLabels** (bool) – by default, the labels appear between the bars. If set to True, the labels and ticks are plotted in the middle of each bar.
 
-## plot_anom_cyclic()
-Plots one or two stacked cyclic bar chart of anomalies saved in one or two data frames.
+* **data** (pandas.DataFrame) - A dataframe containing all data to be plotted.
 
-`cyclebars.plot_anom_horizontal(dfA, dfB = pd.DataFrame(), ax=0, negColor='#404040', posColor='#1a9641', refColor='#BFBFBF', middleLabels=False)`
+optional:
 
-### **Parameters:**
-- **dfA** (pandas.DataFrame) – a dataframe consisting of n rows for n bins and 4 columns (['bin', 'value', 'reference', 'anomaly']), the first containig bin labels (labeled 'bin'), the second containing absolute values (labeled 'values'), the third containing reference values (labeled 'reference') and the forth containing anomalies with respect to those reference values (labeled 'anomaly'). The data frame should be sorted.
-- **dfB** (pandas.DataFrame) –  an optional second dataframe consisting of n rows for n bins and 4 columns (['bin', 'value', 'reference', 'anomaly']), the first containig bin labels (labeled 'bin'), the second containing absolute values (labeled 'values'), the third containing reference values (labeled 'reference') and the forth containing anomalies with respect to those reference values (labeled 'anomaly'). The data frame should be sorted.
-- **axA** (matplotlib.Axes) – the axes on which diagram A is to be be plotted
-- **axB** (matplotlib.Axes) – the axes on which diagram B is to be be plotted
-- **negColor** (string) – custom color for negative anomalies
-- **posColor** (string) – custom color for positive anomalies
-- **refColor** (string) – custom color for reference values
-- **accentcolor** (string) – custom color for accent ring
-- **thetaOffset** (radians) – theta offset for bar charts
-- **thetaDirection** (-1 or +1) – theta direction for bar charts
-- **pieOffset** (radians) – theta offset for pie charts, relative to thetaOffset
-- **middleLabels** (bool) – by default, the labels appear between the bars. If set to True, the labels and ticks are plotted in the middle of each bar.
+* **labels** (string) - The name of the column containig the labels for the bins. By default, the first column of your dataframe is taken.
+* **values_a** (string) - The name of the column containig the values of time searies (a). Anomalies will be calculated as the difference between values and reference_values. By default, column 1 of your dataframe is taken.
+* **reference_values_a** (string) - The name of the column containing the reference values for time series (a). Anomalies will be calculated as the difference between values and reference_values. By default, column 2 of your dataframe is taken.
+* **values_b** (string) - The name of the column containig the values of time series (b). Anomalies will be calculated as the difference between values and reference_values. If none is given, only one time series (a) is plotted.
+* **reference_values_b** (string) - The name of the column containing the reference values for time series (b). Anomalies will be calculated as the difference between values and reference_values. If none is given, only one time series (a) is plotted.
+
+* **ref_total** (float) - A global maximum for reference. It determines the size of the pie chart in the middle of the plot.
+* **ref_maximum** (float) - A reference maximum to determine the scale of the bar plots.
+
+* **ax_cyclic_a**: (matplotlib.pyplot.Axes) - The axes on which the cyclic diagram showing sub series (a) is to be be plotted. The projection has to be polar.
+* **ax_cyclic_b**: (matplotlib.pyplot.Axes) - The axes on which the cyclic diagram showing sub series (b) is to be be plotted. The projection has to be polar.
+* **ax_horizontal** (matplotlib.pyplot.Axes) - The axes on which the horizontal diagram is to be be plotted.
+
+* **color_negative_anomalies** (string) - A custom color for negative anomalies.
+* **color_positive_anomalies** (string) - A custom color for positive anomalies.
+* **color_reference_values** (string) - A custom color for reference values.
+* **accentcolor** (string) - A custom color for accent lines.
+
+* **middle_labels** (boolean) - By deafult, the labels appear between the bars, like on a clock. If set to `True`, the labels and ticks are plotted in the middle of each bar.
+
+* **theta_offset** (radians) – Theta offset for bar chart.
+* **theta_direction** (-1 or +1) – Theta direction for bar chart.
+* **pie_offset** (radians) – Theta offset for pie chart, relative to theta_offset.
+
+* **plot_cyclic_only** (boolean) - If set `True`, only cyclic plots are returned. Only set `True` if `plot_horizontal_only` is `False`!
+* **plot_horizontal_only** (boolean) - If set `True`, only horizontal plots are returned. Only set `True` if `plot_cyclic_only` is `False`!
+* **plot_legends** (boolean) - If set `False`, no legends will be plotted.
 
 ## Example data frames
 
-### for `plot_horizontal()` and `plot_cyclic()`:
+### for `cyclebars()`:
 
-|hour|A          |B          |C          |D          |E          |
-|----|-----------|-----------|-----------|-----------|-----------|
-|0   |25031.61429|3843.392857|1307.985714|987.1714286|2222.021429|
-|1   |18924.3119 |2517.402381|660.7333333|753.5880952|1690.685714|
-|2   |21888.47857|2079.816667|378.35     |805.6214286|2154.404762|
-|3   |21036.60714|3193.614286|875.2428571|679.5857143|1757.607143|
-|4   |39879.07143|8913.319048|3429.388095|1201.32619 |3275.435714|
-|5   |77563.30714|16102.89762|4705.140476|2202.659524|5015.161905|
-|6   |130171.6643|23102.2619 |9027.67619 |5055.045238|9133.464286|
-|7   |141516.2571|19776.1619 |15000.62381|8195.304762|9713.366667|
-|8   |138702.7143|14202.19286|9991.445238|6336.688095|6804.397619|
-|9   |142033.1976|12094.37619|7454.878571|4785.452381|6405.716667|
-|10  |157665.9595|12374.43333|7731.485714|4952.82381 |6966.780952|
-|11  |178675.8429|12960.9619 |9223.819048|5637       |7826.97619 |
-|12  |184261.0143|15173.89286|10921.85714|6171.688095|8019.057143|
-|13  |180940.2429|15192.58571|11008.56905|5978.190476|8020.280952|
-|14  |186300.1119|16737.27143|12668.27381|6680.340476|8678.542857|
-|15  |190704.9786|19555.45   |14212.08571|7119.033333|9529.783333|
-|16  |185540.1976|20771.31905|15000.72857|7293.661905|11891.23571|
-|17  |169488.2929|17886.2881 |14260.52619|7124.838095|10206.76429|
-|18  |136484.3167|13517.53095|10466.7119 |5753.314286|8000.280952|
-|19  |102844.1905|10764.17143|7935.590476|4069.97619 |5957.866667|
-|20  |78359.45952|8886.992857|5417.821429|3291.616667|4576.628571|
-|21  |65456.94048|7837.540476|4373.366667|2727.738095|4008.940476|
-|22  |52841.3619 |6822.647619|4076.247619|2190.180952|3651.235714|
-|23  |36917.87857|4808.171429|2515.864286|1616.392857|2916.088095|
+|hour|A        |B       |C       |D      |E       |
+|----|---------|--------|--------|-------|--------|
+|0   |25031.61 |3843.39 |1307.99 |987.17 |2222.02 |
+|1   |18924.31 |2517.40 |660.73  |753.59 |1690.69 |
+|2   |21888.48 |2079.82 |378.35  |805.62 |2154.40 |
+|3   |21036.61 |3193.61 |875.24  |679.59 |1757.61 |
+|4   |39879.07 |8913.32 |3429.39 |1201.33|3275.44 |
+|5   |77563.31 |16102.90|4705.14 |2202.66|5015.16 |
+|6   |130171.66|23102.26|9027.68 |5055.05|9133.46 |
+|7   |141516.26|19776.16|15000.62|8195.30|9713.37 |
+|8   |138702.71|14202.19|9991.45 |6336.69|6804.40 |
+|9   |142033.20|12094.38|7454.88 |4785.45|6405.72 |
+|10  |157665.96|12374.43|7731.49 |4952.82|6966.78 |
+|11  |178675.84|12960.96|9223.82 |5637.00|7826.98 |
+|12  |184261.01|15173.89|10921.86|6171.69|8019.06 |
+|13  |180940.24|15192.59|11008.57|5978.19|8020.28 |
+|14  |186300.11|16737.27|12668.27|6680.34|8678.54 |
+|15  |190704.98|19555.45|14212.09|7119.03|9529.78 |
+|16  |185540.20|20771.32|15000.73|7293.66|11891.24|
+|17  |169488.29|17886.29|14260.53|7124.84|10206.76|
+|18  |136484.32|13517.53|10466.71|5753.31|8000.28 |
+|19  |102844.19|10764.17|7935.59 |4069.98|5957.87 |
+|20  |78359.46 |8886.99 |5417.82 |3291.62|4576.63 |
+|21  |65456.94 |7837.54 |4373.37 |2727.74|4008.94 |
+|22  |52841.36 |6822.65 |4076.25 |2190.18|3651.24 |
+|23  |36917.88 |4808.17 |2515.86 |1616.39|2916.09 |
 
-### for `plot_anom_horizontal()` and `plot_anom_cyclic`:
+![An example plot made with the example dataframe](https://github.com/klavere/cyclebars/blob/version_1/exampledata/examplefigure.png?raw=true)
 
-|bin|value |reference  |anomaly     |
-|---|------|-----------|------------|
-|0  |14674 |17566.83333|-2892.833333|
-|1  |8674  |12821.5    |-4147.5     |
-|2  |12542 |17195.33333|-4653.333333|
-|3  |12919 |19320.5    |-6401.5     |
-|4  |35717 |50594.5    |-14877.5    |
-|5  |85749 |108139.1667|-22390.16667|
-|6  |177783|201551.1667|-23768.16667|
-|7  |198932|228861     |-29929      |
-|8  |168602|191531.5   |-22929.5    |
-|9  |152906|174936.8333|-22030.83333|
-|10 |167394|188147     |-20753      |
-|11 |195016|215195.3333|-20179.33333|
-|12 |198903|222096.8333|-23193.83333|
-|13 |193707|212669.1667|-18962.16667|
-|14 |208369|228715     |-20346      |
-|15 |226764|246091     |-19327      |
-|16 |235538|244927.5   |-9389.5     |
-|17 |216345|221016.3333|-4671.333333|
-|18 |168512|163041.6667|5470.333333 |
-|19 |122347|112343.6667|10003.33333 |
-|20 |77911 |86210.33333|-8299.333333|
-|21 |65176 |67083      |-1907       |
-|22 |61650 |45754.66667|15895.33333 |
-|23 |30686 |28436.83333|20000       |
+### for `cyclebars_anomalies()`:
+
+|bins|val_a|val_b|ref_a|ref_b|
+|----|-----|-----|-----|-----|
+|0|14674.0|10481.43|17566.83|12547.74|
+|1|8674.0|6195.71|12821.5|9158.21|
+|2|12542.0|8958.57|17195.33|12282.38|
+|3|12919.0|9227.86|19320.5|13800.36|
+|4|35717.0|25512.14|50594.5|36138.93|
+|5|85749.0|61249.29|108139.17|77242.26|
+|6|177783.0|126987.86|201551.17|143965.12|
+|7|198932.0|142094.29|228861.0|163472.14|
+|8|168602.0|120430.0|191531.5|136808.21|
+|9|152906.0|109218.57|174936.83|124954.88|
+|10|167394.0|119567.14|136264.5|134390.71|
+|11|130010.67|139297.14|109831.33|153710.95|
+|12|132602.0|142073.57|109408.17|158640.6|
+|13|129138.0|138362.14|110175.83|151906.55|
+|14|208369.0|148835.0|177850.0|163367.86|
+|15|226764.0|161974.29|246091.0|175779.29|
+|16|235538.0|168241.43|244927.5|174948.21|
+|17|216345.0|154532.14|221016.33|157868.81|
+|18|168512.0|120365.71|163041.67|116458.33|
+|19|122347.0|87390.71|112343.67|80245.48|
+|20|77911.0|55650.71|86210.33|61578.81|
+|21|65176.0|46554.29|67083.0|47916.43|
+|22|61650.0|44035.71|45754.67|32681.9|
+|23|30686.0|21918.57|28436.83|20312.02|
+
+![An example plot made with the example dataframe](https://github.com/klavere/cyclebars/blob/version_1/exampledata/examplefigure_anomalies.png?raw=true)

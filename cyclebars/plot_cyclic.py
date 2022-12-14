@@ -8,6 +8,7 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
                 axA = 0, # the axes on which the diagram A is to be be plotted
                 axB = 0, # the axes on which the diagram B is to be be plotted
                 refTotal = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
+                refMax = None, # a reference maximum, determines the scale of the radial axis
                 colors = {}, # a dict of colours, indexed by the sub series names (
                 colormap = 'tab10', # the name of a colormap (see matplotlib.cm package)
                 thetaOffset = -pi,
@@ -15,6 +16,7 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
                 pieOffset = pi, # theta offset for pie chart, relative to thetaOffset
                 middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
                 accentcolor = 'red', # colour for max label
+                plot_legend = True, # if False, no legends will be plotted.
                ):
     
     singleDf = True if dfB.empty else False
@@ -68,7 +70,7 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
         maxBinTotal = max(binTotals) # Max bin total
         maxBinIndex = binTotals.index(maxBinTotal) # index of bin with max bin total
         maxBinName = binNames[maxBinIndex] # name of bin with max bin total (only first occurence if there are more than one)
-        base = .6*maxBinTotal # base value needed for scales and sizes
+        base = .6*(maxBinTotal if not refMax else refMax) # base value needed for scales and sizes
     else:
         ### for dfA
         #############################
@@ -98,7 +100,7 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
         ### joint max stuff (if necessary)
         ###
         maxBinTotal = max(maxBinTotalA, maxBinTotalB)
-        base = .6*maxBinTotal
+        base = .6*(maxBinTotal if not refMax else refMax)
     #################################
     
     ### set up plot
@@ -221,23 +223,33 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
         axB.set_yticklabels(['* max '+str(int(maxBinTotalB)),'','','',''],color=accentcolor)
     #################################
     
+    ### adapt plot scales if ref_max_a (and b) are given
+    #################################
+    if refMax:
+        for subplot in subplots:
+            subplot.set_ylim(top=refMax)
+            subplot.add_artist(plt.Circle((0,0), base+refMax, transform=subplot.transData._b,
+                fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
+    #################################
+    
     ### legend
     #################################
-    if singleDf:
-        legendTitle = 'Cycle total: '+str(np.round(cycleTotal, decimals=2))
-        legendLabels = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNames, subSeriesTotals)]
-        patches = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNames]
-        ax.legend(patches, legendLabels, title=legendTitle, loc='upper left', bbox_to_anchor=(-0.2,1.3))
-    else:
-        legendTitleA = 'Cycle total: '+str(np.round(cycleTotalA, decimals=2))
-        legendLabelsA = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesA, subSeriesTotalsA)]
-        patchesA = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesA]
-        axA.legend(patchesA, legendLabelsA, title=legendTitleA, loc='upper left', bbox_to_anchor=(-0.2,1.3))
-                
-        legendTitleB = 'Cycle total: '+str(np.round(cycleTotalB, decimals=2))
-        legendLabelsB = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesB, subSeriesTotalsB)]
-        patchesB = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesB]
-        axB.legend(patchesB, legendLabelsB, title=legendTitleB, loc='upper left', bbox_to_anchor=(-0.2,1.3))
+    if plot_legend:
+        if singleDf:
+            legendTitle = 'Cycle total: '+str(np.round(cycleTotal, decimals=2))
+            legendLabels = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNames, subSeriesTotals)]
+            patches = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNames]
+            ax.legend(patches, legendLabels, title=legendTitle, loc='upper left', bbox_to_anchor=(-0.2,1.3))
+        else:
+            legendTitleA = 'Cycle total: '+str(np.round(cycleTotalA, decimals=2))
+            legendLabelsA = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesA, subSeriesTotalsA)]
+            patchesA = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesA]
+            axA.legend(patchesA, legendLabelsA, title=legendTitleA, loc='upper left', bbox_to_anchor=(-0.2,1.3))
+                    
+            legendTitleB = 'Cycle total: '+str(np.round(cycleTotalB, decimals=2))
+            legendLabelsB = [subSeriesName + ': ' + str(np.round(subSeriesTotal, decimals=2))  +' total' for subSeriesName, subSeriesTotal in zip(subSeriesNamesB, subSeriesTotalsB)]
+            patchesB = [plt.Rectangle((0,0),1,1, color=colors[subSeriesName]) for subSeriesName in subSeriesNamesB]
+            axB.legend(patchesB, legendLabelsB, title=legendTitleB, loc='upper left', bbox_to_anchor=(-0.2,1.3))
     #################################
     
     return ax if singleDf else axA, axB

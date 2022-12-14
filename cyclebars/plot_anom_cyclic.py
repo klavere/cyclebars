@@ -7,6 +7,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
                      axA = 0, # the axes on which the diagram A is to be be plotted
                      axB = 0, # the axes on which the diagram B is to be be plotted
                      refTotal = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
+                     refMax = None, # a reference maximum, determines the scale of the radial axis
                      negColor = '#404040', # custom color for negative anomalies
                      posColor = '#1a9641', # custom color for positive anomalies
                      refColor = '#BFBFBF', # custom color for reference values
@@ -15,6 +16,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
                      thetaDirection = -1,
                      pieOffset = pi/2, # theta offset for pie chart, relative to thetaOffset
                      middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
+                     plot_legend = True, # if False, no legends will be plotted.
                     ):
     
     ### set up axes if not given
@@ -55,7 +57,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         maxValue = dfA.value.max()
         maxReference = dfA.reference.max()
         maxBar = max(maxValue, maxReference)
-        base = .6*maxBar
+        base = .6*(maxBar if not refMax else refMax)
         ###
         maxAnomaly = dfA.anomaly.max()
         maxAnomalyIndex = list(dfA.anomaly).index(maxAnomaly)
@@ -119,7 +121,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         ### joint max stuff (if necessary)
         ###
         maxBar = max(maxBarA, maxBarB)
-        base = .6*maxBar
+        base = .6*(maxBar if not refMax else refMax)
     #################################
     
     ### set up plot
@@ -223,21 +225,35 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
                             color = PosNegCol[True] if maxAnomalyB>-minAnomalyB else PosNegCol[False])
     #################################
     
+    ### adapt plot scales if ref_max is given
+    #################################
+    if refMax:
+        for subplot in subplots:
+            subplot.set_ylim(top=refMax)
+            subplot.add_artist(plt.Circle((0,0), base+refMax, transform=subplot.transData._b,
+                fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
+    #################################
+    
     ### legend
     #################################
-    patches = [plt.Rectangle((0,0),1,1, color=refColor),
-               plt.Rectangle((0,0),1,1, edgecolor=PosNegCol[True], facecolor=PosNegCol[False], linewidth=2.5)]
-    if singleDf:
-        legendLabels = ['Values: ' + str(np.round(totalValues, decimals=2))  +' total',
-                        'Anomalies: ' + str(np.round(totalAnomaly, decimals=2))  +' total']
-        ax.legend(patches, legendLabels, loc='upper left', bbox_to_anchor=(-0.2,1.1))
-    else:
-        legendLabelsA = ['Values: ' + str(np.round(totalValuesA, decimals=2))  +' total',
-                         'Anomalies: ' + str(np.round(totalAnomalyA, decimals=2))  +' total']
-        axA.legend(patches, legendLabelsA, loc='upper left', bbox_to_anchor=(-0.2,1.1))
-        legendLabelsB = ['Values: ' + str(np.round(totalValuesB, decimals=2))  +' total',
-                         'Anomalies: ' + str(np.round(totalAnomalyB, decimals=2))  +' total']
-        axB.legend(patches, legendLabelsB, loc='upper left', bbox_to_anchor=(-0.2,1.1))
+    if plot_legend:
+        patches = [plt.Rectangle((0,0),1,1, edgecolor=PosNegCol[True], facecolor=PosNegCol[False], linewidth=2.5),
+                plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False),
+                plt.Rectangle((0,0),1,1, fill=False, edgecolor='none', visible=False)]
+        if singleDf:
+            legendLabels = ['Anomalies: ' + str(np.round(totalAnomaly, decimals=2)) + ' total',
+                            'Values: ' + str(np.round(totalValues, decimals=2)) +' total',
+                            str(100+(np.round((totalAnomaly/totalReference)*100, decimals=2))) + '% of reference values']
+            ax.legend(patches, legendLabels, loc='upper left', bbox_to_anchor=(-0.2,1.1))
+        else:
+            legendLabelsA = ['Anomalies: ' + str(np.round(totalAnomalyA, decimals=2)) + ' total',
+                            'Values: ' + str(np.round(totalValuesA, decimals=2)) + ' total',
+                            str(100+(np.round((totalAnomalyA/totalReferenceA)*100, decimals=2))) + '% of reference values']
+            axA.legend(patches, legendLabelsA, loc='upper left', bbox_to_anchor=(-0.2,1.1))
+            legendLabelsB = ['Anomalies: ' + str(np.round(totalAnomalyB, decimals=2)) + ' total',
+                            'Values: ' + str(np.round(totalValuesB, decimals=2)) + ' total',
+                            str(100+(np.round((totalAnomalyB/totalReferenceB)*100, decimals=2))) + '% of reference values']
+            axB.legend(patches, legendLabelsB, loc='upper left', bbox_to_anchor=(-0.2,1.1))
     #################################
     
     return ax if singleDf else axA, axB
