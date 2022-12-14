@@ -13,8 +13,8 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
                         reference_values_b: str = None, # the name of the column containing the reference values (b). Anomalies will be calculated as the difference between values and reference_values.
                         
                         ref_total: float = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
-                        ref_max_a: float = None, # a reference maximum, to determine the limits of the upper axis and the radial scale
-                        ref_max_b: float = None, # a reference maximum, to determine the limits of the lower axis and the radial scale
+                        ref_max_a: float = None, # a reference maximum, to determine the limits of the upper axis and the radial scale.
+                        ref_max_b: float = None, # a reference maximum, to determine the limits of the lower axis and the radial scale. If none is given but ref_max_a is given, ref_max_b is set to ref_max_a. If ref_max_a is not given, ref_max_b will be ignored.
                         
                         ax_cyclic_a: plt.Axes = 0, # the axes on which the cyclic diagram showing sub series a is to be be plotted
                         ax_cyclic_b: plt.Axes = 0, # the axes on which the cyclic diagram showing sub series b is to be be plotted
@@ -64,6 +64,14 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
     else:
         df_b = pd.DataFrame()
         dual = False
+    
+    ############################################
+    ### set ref_max_b if only ref_max_a is given
+    ############################################
+
+    if ref_max_a:
+        if not ref_max_b:
+            ref_max_b = ref_max_a
     
     ############################################
     ### prepare figures where no axes are given:
