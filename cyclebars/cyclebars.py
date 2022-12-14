@@ -126,4 +126,4 @@ def cyclebars(data: pd.DataFrame, # a dataframe containing all data to be plotte
         )
         axes.append(horizontal_plot)
     
-    return axes
+    return fig, axes

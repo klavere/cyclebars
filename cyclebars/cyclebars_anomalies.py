@@ -141,4 +141,4 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
         )
         axes.append(horizontal_plot)
 
-    return axes
+    return fig, axes
