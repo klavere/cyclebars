@@ -7,8 +7,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
                      axA = 0, # the axes on which the diagram A is to be be plotted
                      axB = 0, # the axes on which the diagram B is to be be plotted
                      refTotal = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
-                     refMaxA = None, # a reference maximum, determines the scale of the radial axis
-                     refMaxB = None, # a reference maximum, determines the scale of the radial axis
+                     refMax = None, # a reference maximum, determines the scale of the radial axis
                      negColor = '#404040', # custom color for negative anomalies
                      posColor = '#1a9641', # custom color for positive anomalies
                      refColor = '#BFBFBF', # custom color for reference values
@@ -58,7 +57,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         maxValue = dfA.value.max()
         maxReference = dfA.reference.max()
         maxBar = max(maxValue, maxReference)
-        base = .6*(maxBar if not refMaxA else refMaxA)
+        base = .6*(maxBar if not refMax else refMax)
         ###
         maxAnomaly = dfA.anomaly.max()
         maxAnomalyIndex = list(dfA.anomaly).index(maxAnomaly)
@@ -122,9 +121,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         ### joint max stuff (if necessary)
         ###
         maxBar = max(maxBarA, maxBarB)
-        base = .6*maxBar
-        if refMaxA:
-            base = .6*(max(refMaxA, refMaxB) if refMaxB else refMaxA)
+        base = .6*(maxBar if not refMax else refMax)
     #################################
     
     ### set up plot
@@ -228,22 +225,13 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
                             color = PosNegCol[True] if maxAnomalyB>-minAnomalyB else PosNegCol[False])
     #################################
     
-    ### adapt plot scales if ref_max_a (and b) are given
+    ### adapt plot scales if ref_max is given
     #################################
-    if singleDf:
-        if refMaxA:
-            ax.set_ylim(top=refMaxA)
-            ax.add_artist(plt.Circle((0,0), base+refMaxA, transform=ax.transData._b,
-                                     fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
-    else:
-        if refMaxA:
-            axA.set_ylim(top=refMaxA)
-            axA.add_artist(plt.Circle((0,0), base+refMaxA, transform=axA.transData._b,
-                                      fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
-        if refMaxB:
-            axB.set_ylim(top=refMaxB)
-            axB.add_artist(plt.Circle((0,0), base+refMaxB, transform=axB.transData._b,
-                                      fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
+    if refMax:
+        for subplot in subplots:
+            subplot.set_ylim(top=refMax)
+            subplot.add_artist(plt.Circle((0,0), base+refMax, transform=subplot.transData._b,
+                fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
     #################################
     
     ### legend

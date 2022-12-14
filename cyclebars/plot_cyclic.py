@@ -8,8 +8,7 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
                 axA = 0, # the axes on which the diagram A is to be be plotted
                 axB = 0, # the axes on which the diagram B is to be be plotted
                 refTotal = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
-                refMaxA = None, # a reference maximum, determines the scale of the radial axis
-                refMaxB = None, # a reference maximum, determines the scale of the radial axis
+                refMax = None, # a reference maximum, determines the scale of the radial axis
                 colors = {}, # a dict of colours, indexed by the sub series names (
                 colormap = 'tab10', # the name of a colormap (see matplotlib.cm package)
                 thetaOffset = -pi,
@@ -71,7 +70,7 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
         maxBinTotal = max(binTotals) # Max bin total
         maxBinIndex = binTotals.index(maxBinTotal) # index of bin with max bin total
         maxBinName = binNames[maxBinIndex] # name of bin with max bin total (only first occurence if there are more than one)
-        base = .6*(maxBinTotal if not refMaxA else refMaxA) # base value needed for scales and sizes
+        base = .6*(maxBinTotal if not refMax else refMax) # base value needed for scales and sizes
     else:
         ### for dfA
         #############################
@@ -101,9 +100,7 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
         ### joint max stuff (if necessary)
         ###
         maxBinTotal = max(maxBinTotalA, maxBinTotalB)
-        base = .6*maxBinTotal
-        if refMaxA:
-            base = .6*(max(refMaxA, refMaxB) if refMaxB else refMaxA)
+        base = .6*(maxBinTotal if not refMax else refMax)
     #################################
     
     ### set up plot
@@ -228,20 +225,11 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
     
     ### adapt plot scales if ref_max_a (and b) are given
     #################################
-    if singleDf:
-        if refMaxA:
-            ax.set_ylim(top=refMaxA)
-            ax.add_artist(plt.Circle((0,0), base+refMaxA, transform=ax.transData._b,
-                                     fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
-    else:
-        if refMaxA:
-            axA.set_ylim(top=refMaxA)
-            axA.add_artist(plt.Circle((0,0), base+refMaxA, transform=axA.transData._b,
-                                      fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
-        if refMaxB:
-            axB.set_ylim(top=refMaxB)
-            axB.add_artist(plt.Circle((0,0), base+refMaxB, transform=axB.transData._b,
-                                      fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
+    if refMax:
+        for subplot in subplots:
+            subplot.set_ylim(top=refMax)
+            subplot.add_artist(plt.Circle((0,0), base+refMax, transform=subplot.transData._b,
+                fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
     #################################
     
     ### legend

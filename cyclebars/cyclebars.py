@@ -25,8 +25,7 @@ def cyclebars(data: pd.DataFrame, # a dataframe containing all data to be plotte
               pie_offset = pi, # theta offset for pie chart, relative to thetaOffset
               
               ref_total: float = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
-              ref_max_a: float = None, # a reference maximum, to determine the limits of the upper axis and the radial scale.
-              ref_max_b: float = None, # a reference maximum, to determine the limits of the lower axis and the radial scale. If none is given but ref_max_a is given, ref_max_b is set to ref_max_a. If ref_max_a is not given, ref_max_b will be ignored.
+              ref_maximum: float = None, # a reference maximum, to determine the scale of the bar plots.
               
               plot_cyclic_only = False, # if True, only a cyclic plot is returned. Only set True if plot_horizontal_only is False!
               plot_horizontal_only = False, # if True, only a horizontal plot is given. Only set True if plot_cyclic_only is False!
@@ -51,14 +50,6 @@ def cyclebars(data: pd.DataFrame, # a dataframe containing all data to be plotte
     else:
         df_b = pd.DataFrame()
         dual = False
-    
-    ############################################
-    ### set ref_max_b if only ref_max_a is given
-    ############################################
-
-    if ref_max_a:
-        if not ref_max_b:
-            ref_max_b = ref_max_a
     
     ############################################
     ### prepare figures where no axes are given:
@@ -109,8 +100,7 @@ def cyclebars(data: pd.DataFrame, # a dataframe containing all data to be plotte
             axA = ax_cyclic_a,
             axB = ax_cyclic_b,
             refTotal = ref_total,
-            refMaxA = ref_max_a,
-            refMaxB = ref_max_b,
+            refMax = ref_maximum,
             colors = colors,
             colormap = colormap,
             thetaOffset = theta_offset,
@@ -127,8 +117,7 @@ def cyclebars(data: pd.DataFrame, # a dataframe containing all data to be plotte
             dfA = df_a,
             dfB = df_b,
             ax = ax_horizontal,
-            refMaxA = ref_max_a,
-            refMaxB = ref_max_b,
+            refMax = ref_maximum,
             colors = colors,
             colormap = colormap,
             middleLabels = middle_labels,
