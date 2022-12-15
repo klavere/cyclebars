@@ -6,6 +6,7 @@ They were developed for time-series of origin-destination (OD) data, i.e. data w
 horizontal charts can be split horizontally (bars go up and down) and two circular charts are juxtaposed correspondingly.
 `cyclebars()` is made for a set of time-series which are plotted as stacked bars.
 `cyclebars_anomalies()` is made for analizing anomalies within a given time-series. Bars representing positive and negative anomalies are plotted on top of bars representing reference values.
+Please observe that the charts are designed to show positive numerical quantities, such as the number of commuters at a given time or more general flow quantities. They are not designed to display negative values.
 
 ## Installation
 
