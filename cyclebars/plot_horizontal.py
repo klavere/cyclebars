@@ -219,4 +219,4 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
                         ncol=len(subSeriesNamesB))
     #################################
     
-    return ax
+    return ax if not plot_legend else ax, axtwin
