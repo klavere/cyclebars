@@ -122,6 +122,16 @@ optional:
 |22  |52841.36 |6822.65 |4076.25 |2190.18|3651.24 |
 |23  |36917.88 |4808.17 |2515.86 |1616.39|2916.09 |
 
+#### code example:
+```
+import pandas as pd
+from cyclebars import cyclebars, cyclebars_anomalies
+
+exampledata = pd.read_csv('data/exampledata.csv')
+
+cyclebars(exampledata, columns_a=['C','D','E'], columns_b=['B'])
+```
+
 ![An example plot made with the example dataframe](https://github.com/klavere/cyclebars/blob/version_1/exampledata/examplefigure.png?raw=true)
 
 ### for `cyclebars_anomalies()`:
@@ -152,5 +162,15 @@ optional:
 |21|65176.0|46554.29|67083.0|47916.43|
 |22|61650.0|44035.71|45754.67|32681.9|
 |23|30686.0|21918.57|28436.83|20312.02|
+
+#### code example:
+```
+import pandas as pd
+from cyclebars import cyclebars, cyclebars_anomalies
+
+exampledata_anomalies = pd.read_csv('data/exampledata_anomalies.csv')
+
+cyclebars_anomalies(exampledata_anomalies, values_a='val_a', reference_values_a='ref_a', values_b='val_b', reference_values_b='ref_b')
+```
 
 ![An example plot made with the example dataframe](https://github.com/klavere/cyclebars/blob/version_1/exampledata/examplefigure_anomalies.png?raw=true)
