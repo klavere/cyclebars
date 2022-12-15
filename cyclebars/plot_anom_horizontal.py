@@ -223,4 +223,4 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
                         ncol=3)
     #################################
     
-    return ax
+    return ax if not plot_legend else ax, axtwin
