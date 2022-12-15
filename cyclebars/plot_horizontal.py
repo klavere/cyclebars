@@ -217,6 +217,7 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
                         loc='lower center',
                         bbox_to_anchor=(0.5,-0.1),
                         ncol=len(subSeriesNamesB))
+        return ax, axtwin
     #################################
-    
-    return ax if not plot_legend else ax, axtwin
+    else:
+        return ax

@@ -221,6 +221,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
                         loc='lower center',
                         bbox_to_anchor=(0.5,-0.1),
                         ncol=3)
+        return ax, axtwin
     #################################
-    
-    return ax if not plot_legend else ax, axtwin
+    else:
+        return ax
