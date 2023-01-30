@@ -121,8 +121,8 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         totalValuesB = dfB.value.sum()
         totalReferenceB = dfB.reference.sum()
         totalAnomalyB = dfB.anomaly.sum()
-        totalPositiveAnomalyB = dfA[dfA['anomaly']>0].anomaly.sum()
-        totalNegativeAnomalyB = dfA[dfA['anomaly']<0].anomaly.abs().sum()
+        totalPositiveAnomalyB = dfB[dfB['anomaly']>0].anomaly.sum()
+        totalNegativeAnomalyB = dfB[dfB['anomaly']<0].anomaly.abs().sum()
         ### 
         ### joint max stuff (if necessary)
         ###
