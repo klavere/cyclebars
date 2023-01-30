@@ -56,7 +56,7 @@ optional:
 
 Returns a set of bar charts showing anomalies in circular and horizontal manner.
 
-`cyclebars_anomalies(data, labels=None, values_a=None, reference_values_a=None, values_b=None, reference_values_b=None, ref_total=0, ref_maximum=None, ax_cyclic_a=0, ax_cyclic_b=0, ax_horizontal=0, color_negative_anomalies='#404040', color_positive_anomalies='#1a9641', color_reference_values='#BFBFBF', accentcolor='white', middle_labels=False, theta_offset=-pi, theta_direction=-1, pie_offset=pi/2, plot_cyclic_only=False, plot_horizontal_only=False, plot_legends=True`
+`cyclebars_anomalies(data, labels=None, values_a=None, reference_values_a=None, values_b=None, reference_values_b=None, ref_total=0, ref_maximum=None, ax_cyclic_a=0, ax_cyclic_b=0, ax_horizontal=0, color_negative_anomalies='#404040', color_positive_anomalies='#1a9641', color_reference_values='#BFBFBF', accentcolor='white', middle_labels=False, theta_offset=-pi, theta_direction=-1, pie_offset=0, plot_cyclic_only=False, plot_horizontal_only=False, plot_legends=True`
 
 ### **Parameters:**
 

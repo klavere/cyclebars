@@ -28,7 +28,7 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
                         
                         theta_offset = -pi,
                         theta_direction = -1,
-                        pie_offset = pi/2, # theta offset for pie chart, relative to thetaOffset
+                        pie_offset = 0, # theta offset for pie chart, relative to thetaOffset
                         
                         plot_cyclic_only = False, # if True, only a cyclic plot is returned. Only set True if plot_horizontal_only is False!
                         plot_horizontal_only = False, # if True, only a horizontal plot is given. Only set True if plot_cyclic_only is False!
