@@ -186,8 +186,8 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         pieRadius = 0.95*base*max(totalReference, totalValues)/refTotal
         referenceValuesRadius = 0.95*base*totalReference/refTotal
         valuesRadius = 0.95*base*totalValues/refTotal
-        posAnomalyAngle = radians((totalPositiveAnomaly/totalValues)*360)
-        negAnomalyAngle = radians((totalNegativeAnomaly/totalReference)*360)
+        posAnomalyAngle = radians((totalPositiveAnomaly/totalValues)*180)
+        negAnomalyAngle = radians((totalNegativeAnomaly/totalReference)*180)
         #############################
         ### plot left half-circle for reference values
         ax.bar(pieOffset-(pi/2), referenceValuesRadius, width=pi, alpha=alpha,
@@ -208,10 +208,10 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         valuesRadiusA = 0.95*base*totalValuesA/refTotal
         referenceValuesRadiusB = 0.95*base*totalReferenceB/refTotal
         valuesRadiusB = 0.95*base*totalValuesB/refTotal
-        posAnomalyAngleA = radians((totalPositiveAnomalyA/totalValuesA)*360)
-        negAnomalyAngleA = radians((totalNegativeAnomalyA/totalReferenceA)*360)
-        posAnomalyAngleB = radians((totalPositiveAnomalyB/totalValuesB)*360)
-        negAnomalyAngleB = radians((totalNegativeAnomalyB/totalReferenceB)*360)
+        posAnomalyAngleA = radians((totalPositiveAnomalyA/totalValuesA)*180)
+        negAnomalyAngleA = radians((totalNegativeAnomalyA/totalReferenceA)*180)
+        posAnomalyAngleB = radians((totalPositiveAnomalyB/totalValuesB)*180)
+        negAnomalyAngleB = radians((totalNegativeAnomalyB/totalReferenceB)*180)
         ### plot A
         #############################
         ### plot left half-circle for reference values
