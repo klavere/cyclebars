@@ -187,7 +187,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         referenceValuesRadius = 0.95*base*totalReference/refTotal
         valuesRadius = 0.95*base*totalValues/refTotal
         posAnomalyAngle = radians((totalPositiveAnomaly/totalValues)*360)
-        negAnomalyAngle = radians((totalNegativeAnomaly/totalValues)*360)
+        negAnomalyAngle = radians((totalNegativeAnomaly/totalReference)*360)
         #############################
         ### plot left half-circle for reference values
         ax.bar(pieOffset-(pi/2), referenceValuesRadius, width=pi, alpha=alpha,
@@ -209,9 +209,9 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         referenceValuesRadiusB = 0.95*base*totalReferenceB/refTotal
         valuesRadiusB = 0.95*base*totalValuesB/refTotal
         posAnomalyAngleA = radians((totalPositiveAnomalyA/totalValuesA)*360)
-        negAnomalyAngleA = radians((totalNegativeAnomalyA/totalValuesA)*360)
+        negAnomalyAngleA = radians((totalNegativeAnomalyA/totalReferenceA)*360)
         posAnomalyAngleB = radians((totalPositiveAnomalyB/totalValuesB)*360)
-        negAnomalyAngleB = radians((totalNegativeAnomalyB/totalValuesB)*360)
+        negAnomalyAngleB = radians((totalNegativeAnomalyB/totalReferenceB)*360)
         ### plot A
         #############################
         ### plot left half-circle for reference values
