@@ -74,6 +74,8 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         totalValues = dfA.value.sum()
         totalReference = dfA.reference.sum()
         totalAnomaly = dfA.anomaly.sum()
+        totalPositiveAnomaly = dfA[dfA['anomaly']>0].anomaly.sum()
+        totalNegativeAnomaly = dfA[dfA['anomaly']<0].anomaly.abs().sum()
     else:
         ### for dfA
         #############################
@@ -96,6 +98,8 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         totalValuesA = dfA.value.sum()
         totalReferenceA = dfA.reference.sum()
         totalAnomalyA = dfA.anomaly.sum()
+        totalPositiveAnomalyA = dfA[dfA['anomaly']>0].anomaly.sum()
+        totalNegativeAnomalyA = dfA[dfA['anomaly']<0].anomaly.abs().sum()
         ### for dfB
         #############################
         maxValueB = dfB.value.max()
@@ -117,6 +121,8 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         totalValuesB = dfB.value.sum()
         totalReferenceB = dfB.reference.sum()
         totalAnomalyB = dfB.anomaly.sum()
+        totalPositiveAnomalyB = dfA[dfA['anomaly']>0].anomaly.sum()
+        totalNegativeAnomalyB = dfA[dfA['anomaly']<0].anomaly.abs().sum()
         ### 
         ### joint max stuff (if necessary)
         ###
@@ -174,36 +180,66 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
     ### pie chart
     #################################
     if not refTotal:
-        refTotal = totalValues if singleDf else max(totalValuesA, totalValuesB)
+        refTotal = max(totalValues, totalReference) if singleDf else max(totalValuesA, totalReferenceA, totalValuesB, totalReferenceB)
     if singleDf:
         ### plot
+        pieRadius = 0.95*base*max(totalReference, totalValues)/refTotal
+        referenceValuesRadius = 0.95*base*totalReference/refTotal
+        valuesRadius = 0.95*base*totalValues/refTotal
+        posAnomalyAngle = radians((totalPositiveAnomaly/totalValues)*360)
+        negAnomalyAngle = radians((totalNegativeAnomaly/totalValues)*360)
         #############################
-        anomColor = PosNegCol[True] if totalAnomaly>0 else PosNegCol[False]
-        pieRadius = 0.95*base*totalValues/refTotal
-        anomalyAngle = radians((totalAnomaly/totalValues)*360)
-        ax.add_artist(plt.Circle((0, 0), pieRadius, transform=ax.transData._b,
-                                 fill=True, color=refColor, alpha=1, zorder=8))
-        ax.bar(pieOffset, pieRadius, width=anomalyAngle, alpha=alpha,
-               color=anomColor, bottom=-base, zorder=10)
+        ### plot left half-circle for reference values
+        ax.bar(pieOffset-(pi/2), referenceValuesRadius, width=pi, alpha=alpha,
+               color=refColor, bottom=-base, zorder=10)
+        ### plot bar on bottom left with angle showing negative anomalies
+        ax.bar(pieOffset-pi+(negAnomalyAngle/2), referenceValuesRadius, width=negAnomalyAngle, alpha=alpha,
+               color=negColor, bottom=-base, zorder=11)
+        ### plot right half-circle for values
+        ax.bar(pieOffset+(pi/2), valuesRadius, width=pi, alpha=alpha,
+               color=refColor, bottom=-base, zorder=10)
+        ### plot bar on top right with angle showing positive anomalies
+        ax.bar(pieOffset+(posAnomalyAngle/2), valuesRadius, width=posAnomalyAngle, alpha=alpha,
+               color=posColor, bottom=-base, zorder=11)
     else:
+        ### plot
+        pieRadius = 0.95*base*max(totalReferenceA, totalValuesA, totalReferenceB, totalValuesB)/refTotal
+        referenceValuesRadiusA = 0.95*base*totalReferenceA/refTotal
+        valuesRadiusA = 0.95*base*totalValuesA/refTotal
+        referenceValuesRadiusB = 0.95*base*totalReferenceB/refTotal
+        valuesRadiusB = 0.95*base*totalValuesB/refTotal
+        posAnomalyAngleA = radians((totalPositiveAnomalyA/totalValuesA)*360)
+        negAnomalyAngleA = radians((totalNegativeAnomalyA/totalValuesA)*360)
+        posAnomalyAngleB = radians((totalPositiveAnomalyB/totalValuesB)*360)
+        negAnomalyAngleB = radians((totalNegativeAnomalyB/totalValuesB)*360)
         ### plot A
         #############################
-        anomColorA = PosNegCol[True] if totalAnomalyA>0 else PosNegCol[False]
-        pieRadiusA = 0.95*base*totalValuesA/refTotal
-        anomalyAngleA = radians((totalAnomalyA/totalValuesA)*360)
-        axA.add_artist(plt.Circle((0, 0), pieRadiusA, transform=axA.transData._b,
-                                  fill=True, color=refColor, alpha=1, zorder=8))
-        axA.bar(pieOffset, pieRadiusA, width=anomalyAngleA, alpha=alpha,
-                color=anomColorA, bottom=-base, zorder=10)
+        ### plot left half-circle for reference values
+        axA.bar(pieOffset-(pi/2), referenceValuesRadiusA, width=pi, alpha=alpha,
+               color=refColor, bottom=-base, zorder=10)
+        ### plot bar on bottom left with angle showing negative anomalies
+        axA.bar(pieOffset-pi+(negAnomalyAngleA/2), referenceValuesRadiusA, width=negAnomalyAngleA, alpha=alpha,
+               color=negColor, bottom=-base, zorder=11)
+        ### plot right half-circle for values
+        axA.bar(pieOffset+(pi/2), valuesRadiusA, width=pi, alpha=alpha,
+               color=refColor, bottom=-base, zorder=10)
+        ### plot bar on top right with angle showing positive anomalies
+        axA.bar(pieOffset+(posAnomalyAngleA/2), valuesRadiusA, width=posAnomalyAngleA, alpha=alpha,
+               color=posColor, bottom=-base, zorder=11)
         ### plot B
         #############################
-        anomColorB = PosNegCol[True] if totalAnomalyB>0 else PosNegCol[False]
-        pieRadiusB = 0.95*base*totalValuesB/refTotal
-        anomalyAngleB = radians((totalAnomalyB/totalValuesB)*360)
-        axB.add_artist(plt.Circle((0, 0), pieRadiusB, transform=axB.transData._b,
-                                  fill=True, color=refColor, alpha=1, zorder=8))
-        axB.bar(pieOffset, pieRadiusB, width=anomalyAngleB, alpha=alpha,
-                color=anomColorB, bottom=-base, zorder=10)
+        ### plot left half-circle for reference values
+        axB.bar(pieOffset-(pi/2), referenceValuesRadiusB, width=pi, alpha=alpha,
+               color=refColor, bottom=-base, zorder=10)
+        ### plot bar on bottom left with angle showing negative anomalies
+        axB.bar(pieOffset-pi+(negAnomalyAngleB/2), referenceValuesRadiusB, width=negAnomalyAngleB, alpha=alpha,
+               color=negColor, bottom=-base, zorder=11)
+        ### plot right half-circle for values
+        axB.bar(pieOffset+(pi/2), valuesRadiusB, width=pi, alpha=alpha,
+               color=refColor, bottom=-base, zorder=10)
+        ### plot bar on top right with angle showing positive anomalies
+        axB.bar(pieOffset+(posAnomalyAngleB/2), valuesRadiusB, width=posAnomalyAngleB, alpha=alpha,
+               color=posColor, bottom=-base, zorder=11)
     #################################
 
     ### max circles and label
