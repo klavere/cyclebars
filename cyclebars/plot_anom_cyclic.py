@@ -252,12 +252,12 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         subplot.add_artist(plt.Circle((0, 0), .95*base, transform=subplot.transData._b,
                                       fill=True, color='#FFFFFF', alpha=1, zorder=6)) # white background
     if singleDf:
-        ax.set_yticklabels([str(int(maxminAnomaly)),'','','',''],
+        ax.set_yticklabels([str(np.round(maxminAnomaly, 2)),'','','',''],
                            color = PosNegCol[True] if maxAnomaly>-minAnomaly else PosNegCol[False])
     else:
-        axA.set_yticklabels([str(int(maxminAnomalyA)),'','','',''],
+        axA.set_yticklabels([str(np.round(maxminAnomalyA, 2)),'','','',''],
                             color = PosNegCol[True] if maxAnomalyA>-minAnomalyA else PosNegCol[False])
-        axB.set_yticklabels([str(int(maxminAnomalyB)),'','','',''],
+        axB.set_yticklabels([str(np.round(maxminAnomalyB, 2)),'','','',''],
                             color = PosNegCol[True] if maxAnomalyB>-minAnomalyB else PosNegCol[False])
     #################################
     

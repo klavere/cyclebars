@@ -157,14 +157,14 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
     #################################
     if singleDf:
         ax.set_yticks([maxBar, .75*maxBar, .5*maxBar, .25*maxBar, 0])
-        ax.set_yticklabels([str(int(maxBar)),'','','',0], color='gray', size=9)
+        ax.set_yticklabels([str(np.round(maxBar, 2)),'','','',0], color='gray', size=9)
         ax.axhline(y=maxBar, color='gray', linewidth=1)
         ax.axhline(y=.5*base, color=accentcolor, linewidth=12, zorder=0)
     else:
         negticks = [base, base-.25*maxBarB, base-.5*maxBarB, base-.75*maxBarB, base-maxBarB]
-        negticklabels = [0,'','','',str(int(maxBarB))]
+        negticklabels = [0,'','','',str(np.round(maxBarB, 2))]
         ax.set_yticks([maxBarA, .75*maxBarA, .5*maxBarA, .25*maxBarA, 0] + negticks)
-        ax.set_yticklabels([str(int(maxBarA)),'','','',0] + negticklabels, color='gray', size=9)
+        ax.set_yticklabels([str(np.round(maxBarA, 2)),'','','',0] + negticklabels, color='gray', size=9)
         ax.axhline(y=maxBarA, color='gray', linewidth=1)
         ax.axhline(y=base-maxBarB, color='gray', linewidth=2)
         ax.axhline(y=.5*base, color=accentcolor, linewidth=12, zorder=0)

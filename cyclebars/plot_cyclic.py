@@ -217,10 +217,10 @@ def plot_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisting of
         subplot.add_artist(plt.Circle((0,0), base+maxBinTotal, transform=subplot.transData._b,
                                       fill=False, edgecolor='gray', linewidth=1, alpha=1, zorder=15))
     if singleDf:
-        ax.set_yticklabels(['* max '+str(int(maxBinTotal)),'','','',''],color=accentcolor)
+        ax.set_yticklabels(['* max '+str(np.round(maxBinTotal, 2)),'','','',''],color=accentcolor)
     else:
-        axA.set_yticklabels(['* max '+str(int(maxBinTotalA)),'','','',''],color=accentcolor)
-        axB.set_yticklabels(['* max '+str(int(maxBinTotalB)),'','','',''],color=accentcolor)
+        axA.set_yticklabels(['* max '+str(np.round(maxBinTotalA, 2)),'','','',''],color=accentcolor)
+        axB.set_yticklabels(['* max '+str(np.round(maxBinTotalB, 2)),'','','',''],color=accentcolor)
     #################################
     
     ### adapt plot scales if ref_max_a (and b) are given

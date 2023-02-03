@@ -154,13 +154,13 @@ def plot_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes consistin
     #################################
     if singleDf:
         ax.set_yticks([maxBinTotal, .75*maxBinTotal, .5*maxBinTotal, .25*maxBinTotal, 0])
-        ax.set_yticklabels([str(int(maxBinTotal)),'','','',0], color='gray', size=9)
+        ax.set_yticklabels([str(np.round(maxBinTotal, 2)),'','','',0], color='gray', size=9)
         ax.axhline(y=maxBinTotal, color=accentcolor, linewidth=1)
     else:
         negticks = [base, base-.25*maxBinTotalB, base-.5*maxBinTotalB, base-.75*maxBinTotalB, base-maxBinTotalB]
-        negticklabels = [0,'','','',str(int(maxBinTotalB))]
+        negticklabels = [0,'','','',str(np.round(maxBinTotalB, 2))]
         ax.set_yticks([maxBinTotalA, .75*maxBinTotalA, .5*maxBinTotalA, .25*maxBinTotalA, 0] + negticks)
-        ax.set_yticklabels([str(int(maxBinTotalA)),'','','',0] + negticklabels, color='gray', size=9)
+        ax.set_yticklabels([str(np.round(maxBinTotalA, 2)),'','','',0] + negticklabels, color='gray', size=9)
         ax.axhline(y=maxBinTotalA, color=accentcolor, linewidth=1)
         ax.axhline(y=base-maxBinTotalB, color=accentcolor, linewidth=1)
     #################################
