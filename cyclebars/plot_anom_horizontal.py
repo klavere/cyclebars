@@ -143,7 +143,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
     ### widths and angles
     barWidth=0.9
     anomWidth=0.9*3/4
-    sdWidth=0.9/6
+    sdWidth=0.9/4
     ### colors
     alpha=1
     PosNegCol = {True: posColor, False: negColor}
