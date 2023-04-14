@@ -49,8 +49,8 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         maxValue = dfA.value.max()
         maxReference = dfA.reference.max()
         if with_sd:
-            dfA['ref_sd_bars'] = [r + s for r, s in zip(dfA.reference, dfA.sd)]
-            maxReference = dfA.ref_sd_bars.max()
+            ref_sd_bars = [r + s for r, s in zip(dfA.reference, dfA.sd)]
+            maxReference = max(ref_sd_bars)
         maxBar = max(maxValue, maxReference)
         base = -.03*(maxBar if not refMax else refMax)
         ###
@@ -75,8 +75,8 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         maxValueA = dfA.value.max()
         maxReferenceA = dfA.reference.max()
         if with_sd:
-            dfA['ref_sd_bars'] = [r + s for r, s in zip(dfA.reference, dfA.sd)]
-            maxReferenceA = dfA.ref_sd_bars.max()
+            ref_sd_bars_a = [r + s for r, s in zip(dfA.reference, dfA.sd)]
+            maxReferenceA = max(ref_sd_bars_a)
         maxBarA = max(maxValueA, maxReferenceA)
         ###
         maxAnomalyA = dfA.anomaly.max()
@@ -99,8 +99,8 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         maxValueB = dfB.value.max()
         maxReferenceB = dfB.reference.max()
         if with_sd:
-            dfB['ref_sd_bars'] = [r + s for r, s in zip(dfB.reference, dfB.sd)]
-            maxReferenceB = dfB.ref_sd_bars.max()
+            ref_sd_bars_b = [r + s for r, s in zip(dfB.reference, dfB.sd)]
+            maxReferenceB = max(ref_sd_bars_b)
         maxBarB = max(maxValueB, maxReferenceB)
         ###
         maxAnomalyB = dfB.anomaly.max()
