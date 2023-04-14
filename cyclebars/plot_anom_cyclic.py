@@ -171,7 +171,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
     barAngles = [radians((b+.5)*360/len(binNames)) for b in range(len(binNames))] # angles to put bars at
     barWidth = radians(360/(len(binNames)+1)) # Width of individual bars - slighty slimmer than bins
     anomWidth = barWidth*3/4
-    sdWidth=0.9/4
+    sdWidth=0.9/6
     ### colors
     alpha = 1 # opacity of bars and pie chart
     PosNegCol = {True: posColor, False: negColor}
