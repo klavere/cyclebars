@@ -194,14 +194,14 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         axA.bar(barAngles, dfA.anomaly, width=anomWidth, alpha=alpha, color=(dfA.anomaly > 0).map(PosNegCol), bottom = dfA.reference)
         if with_sd:
             ### standard deviations A
-            ax.bar(barAngles, 2*dfA.sd, width=sdWidth, alpha=alpha, color=sdColor, bottom=dfA.reference-dfA.sd)
+            axA.bar(barAngles, 2*dfA.sd, width=sdWidth, alpha=alpha, color=sdColor, bottom=dfA.reference-dfA.sd)
         ### reference values B
         axB.bar(barAngles, dfB.reference, width=barWidth, alpha=alpha, color=refColor)
         ### anomalies B
         axB.bar(barAngles, dfB.anomaly, width=anomWidth, alpha=alpha, color=(dfB.anomaly > 0).map(PosNegCol), bottom = dfB.reference)
         if with_sd:
             ### standard deviations B
-            ax.bar(barAngles, 2*dfB.sd, width=sdWidth, alpha=alpha, color=sdColor, bottom=dfB.reference-dfB.sd)
+            axB.bar(barAngles, 2*dfB.sd, width=sdWidth, alpha=alpha, color=sdColor, bottom=dfB.reference-dfB.sd)
     #################################
     
     ### pie chart
