@@ -65,8 +65,8 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         maxValue = dfA.value.max()
         maxReference = dfA.reference.max()
         if with_sd:
-            ref_sd_bars = [r + s for r, s in zip(dfA.reference, dfA.sd)]
-            maxReference = ref_sd_bars.max()
+            dfA['ref_sd_bars'] = [r + s for r, s in zip(dfA.reference, dfA.sd)]
+            maxReference = dfA.ref_sd_bars.max()
         maxBar = max(maxValue, maxReference)
         base = .6*(maxBar if not refMax else refMax)
         ###
@@ -93,8 +93,8 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         maxValueA = dfA.value.max()
         maxReferenceA = dfA.reference.max()
         if with_sd:
-            ref_sd_bars_a = [r + s for r, s in zip(dfA.reference, dfA.sd)]
-            maxReferenceA = ref_sd_bars_a.max()
+            dfA['ref_sd_bars'] = [r + s for r, s in zip(dfA.reference, dfA.sd)]
+            maxReferenceA = dfA.ref_sd_bars.max()
         maxBarA = max(maxValueA, maxReferenceA)
         ###
         maxAnomalyA = dfA.anomaly.max()
@@ -119,8 +119,8 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         maxValueB = dfB.value.max()
         maxReferenceB = dfB.reference.max()
         if with_sd:
-            ref_sd_bars_b = [r + s for r, s in zip(dfB.reference, dfB.sd)]
-            maxReferenceB = ref_sd_bars_b.max()
+            dfB['ref_sd_bars'] = [r + s for r, s in zip(dfB.reference, dfB.sd)]
+            maxReferenceB = dfB.ref_sd_bars.max()
         maxBarB = max(maxValueB, maxReferenceB)
         ###
         maxAnomalyB = dfB.anomaly.max()
