@@ -9,6 +9,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
                          posColor = '#1a9641', # custom color for positive anomalies
                          refColor = '#BFBFBF', # custom color for reference values
                          accentcolor = 'white', # custom color for accent line
+                         sdColor = 'grey', # custom color for standard deviation
                          middleLabels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
                          plot_legend = True, # if False, no legends will be plotted.
                         ):
@@ -26,11 +27,18 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
     
     ### check columnnames in df
     #################################
-    if not list(dfA.columns.values) == ['bin', 'value', 'reference', 'anomaly']:
-        return "please name your dataframe columns ['bin', 'value', 'reference', 'anomaly']."
-    if not singleDf and not list(dfB.columns.values) == ['bin', 'value', 'reference', 'anomaly']:
-        return "please name your dataframe columns ['bin', 'value', 'reference', 'anomaly']."
+    if not list(dfA.columns.values) in [['bin', 'value', 'reference', 'anomaly'], ['bin', 'value', 'reference', 'anomaly', 'sd']]:
+        return "please name your dataframe columns ['bin', 'value', 'reference', 'anomaly'] or ['bin', 'value', 'reference', 'anomaly', 'sd']."
+    if not singleDf and not list(dfB.columns.values) in [['bin', 'value', 'reference', 'anomaly'], ['bin', 'value', 'reference', 'anomaly', 'sd']]:
+        return "please name your dataframe columns ['bin', 'value', 'reference', 'anomaly'] or ['bin', 'value', 'reference', 'anomaly', 'sd']."
     #################################
+
+    with_sd = False
+    if 'sd' in list(dfA.columns.values):
+        if singleDf:
+            with_sd = True
+        elif 'sd' in list(dfB.columns.values):
+            with_sd = True
     
     ### get data from df
     #################################
@@ -40,6 +48,9 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
     if singleDf:
         maxValue = dfA.value.max()
         maxReference = dfA.reference.max()
+        if with_sd:
+            ref_sd_bars = [r + s for r, s in zip(dfA.reference, dfA.sd)]
+            maxReference = ref_sd_bars.max()
         maxBar = max(maxValue, maxReference)
         base = -.03*(maxBar if not refMax else refMax)
         ###
@@ -63,6 +74,9 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         #############################
         maxValueA = dfA.value.max()
         maxReferenceA = dfA.reference.max()
+        if with_sd:
+            ref_sd_bars_a = [r + s for r, s in zip(dfA.reference, dfA.sd)]
+            maxReferenceA = ref_sd_bars_a.max()
         maxBarA = max(maxValueA, maxReferenceA)
         ###
         maxAnomalyA = dfA.anomaly.max()
@@ -84,6 +98,9 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         #############################
         maxValueB = dfB.value.max()
         maxReferenceB = dfB.reference.max()
+        if with_sd:
+            ref_sd_bars_b = [r + s for r, s in zip(dfB.reference, dfB.sd)]
+            maxReferenceB = ref_sd_bars_b.max()
         maxBarB = max(maxValueB, maxReferenceB)
         ###
         maxAnomalyB = dfB.anomaly.max()
@@ -126,6 +143,7 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
     ### widths and angles
     barWidth=0.9
     anomWidth=0.9*3/4
+    sdWidth=0.9/4
     ### colors
     alpha=1
     PosNegCol = {True: posColor, False: negColor}
@@ -138,11 +156,17 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         ax.bar(xticks, dfA.reference, width=barWidth, alpha=alpha, color=refColor)
         ### anomalies
         ax.bar(xticks, dfA.anomaly, width=anomWidth, alpha=alpha, color=(dfA.anomaly > 0).map(PosNegCol), bottom=dfA.reference)
+        if with_sd:
+            ### standard deviations
+            ax.bar(xticks, 2*dfA.sd, width=sdWidth, alpha=alpha, color=sdColor, bottom=dfA.reference-dfA.sd)
     else:
         ### reference values A
         ax.bar(xticks, dfA.reference, width=barWidth, alpha=alpha, color=refColor)
         ### anomalies A
         ax.bar(xticks, dfA.anomaly, width=anomWidth, alpha=alpha, color=(dfA.anomaly > 0).map(PosNegCol), bottom=dfA.reference)
+        if with_sd:
+            ### standard deviations A
+            ax.bar(xticks, 2*dfA.sd, width=sdWidth, alpha=alpha, color=sdColor, bottom=dfA.reference-dfA.sd)
         ### reference values B
         bottomBarValues = [base]*len(binNames)
         negReferences = [bValue*(-1) for bValue in dfB.reference]
@@ -151,6 +175,9 @@ def plot_anom_horizontal(dfA, dfB = pd.DataFrame(), # one or two dataframes cons
         negAnoms = [bValue*(-1) for bValue in dfB.anomaly]
         bottomBarValuesAnom = [base+bValue*(-1) for bValue in dfB.reference]
         ax.bar(xticks, negAnoms, width=anomWidth, alpha=alpha, color=(dfB.anomaly > 0).map(PosNegCol), bottom=bottomBarValuesAnom)
+        if with_sd:
+            ### standard deviations B
+            ax.bar(xticks, 2*dfB.sd, width=sdWidth, alpha=alpha, color=sdColor, bottom=dfB.reference-dfB.sd)
     #################################
         
     ### max lines and yticks

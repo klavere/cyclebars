@@ -12,6 +12,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
                      posColor = '#1a9641', # custom color for positive anomalies
                      refColor = '#BFBFBF', # custom color for reference values
                      accentcolor = 'white', # custom color for accent ring
+                     sdColor = 'grey', # custom color for standard deviation
                      thetaOffset = -pi,
                      thetaDirection = -1,
                      pieOffset = 0, # theta offset for pie chart, relative to thetaOffset
@@ -42,11 +43,18 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
     
     ### check columnnames in df
     #################################
-    if not list(dfA.columns.values) == ['bin', 'value', 'reference', 'anomaly']:
-        return "please name your dataframe columns ['bin', 'value', 'reference', 'anomaly']."
-    if not singleDf and not list(dfB.columns.values) == ['bin', 'value', 'reference', 'anomaly']:
-        return "please name your dataframe columns ['bin', 'value', 'reference', 'anomaly']."
+    if not list(dfA.columns.values) in [['bin', 'value', 'reference', 'anomaly'], ['bin', 'value', 'reference', 'anomaly', 'sd']]:
+        return "please name your dataframe columns ['bin', 'value', 'reference', 'anomaly'] or ['bin', 'value', 'reference', 'anomaly', 'sd']."
+    if not singleDf and not list(dfB.columns.values) in [['bin', 'value', 'reference', 'anomaly'], ['bin', 'value', 'reference', 'anomaly', 'sd']]:
+        return "please name your dataframe columns ['bin', 'value', 'reference', 'anomaly'] or ['bin', 'value', 'reference', 'anomaly', 'sd']."
     #################################
+
+    with_sd = False
+    if 'sd' in list(dfA.columns.values):
+        if singleDf:
+            with_sd = True
+        elif 'sd' in list(dfB.columns.values):
+            with_sd = True
     
     ### get data from df
     #################################
@@ -56,6 +64,9 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
     if singleDf:
         maxValue = dfA.value.max()
         maxReference = dfA.reference.max()
+        if with_sd:
+            ref_sd_bars = [r + s for r, s in zip(dfA.reference, dfA.sd)]
+            maxReference = ref_sd_bars.max()
         maxBar = max(maxValue, maxReference)
         base = .6*(maxBar if not refMax else refMax)
         ###
@@ -81,6 +92,9 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         #############################
         maxValueA = dfA.value.max()
         maxReferenceA = dfA.reference.max()
+        if with_sd:
+            ref_sd_bars_a = [r + s for r, s in zip(dfA.reference, dfA.sd)]
+            maxReferenceA = ref_sd_bars_a.max()
         maxBarA = max(maxValueA, maxReferenceA)
         ###
         maxAnomalyA = dfA.anomaly.max()
@@ -104,6 +118,9 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         #############################
         maxValueB = dfB.value.max()
         maxReferenceB = dfB.reference.max()
+        if with_sd:
+            ref_sd_bars_b = [r + s for r, s in zip(dfB.reference, dfB.sd)]
+            maxReferenceB = ref_sd_bars_b.max()
         maxBarB = max(maxValueB, maxReferenceB)
         ###
         maxAnomalyB = dfB.anomaly.max()
@@ -154,6 +171,7 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
     barAngles = [radians((b+.5)*360/len(binNames)) for b in range(len(binNames))] # angles to put bars at
     barWidth = radians(360/(len(binNames)+1)) # Width of individual bars - slighty slimmer than bins
     anomWidth = barWidth*3/4
+    sdWidth=0.9/4
     ### colors
     alpha = 1 # opacity of bars and pie chart
     PosNegCol = {True: posColor, False: negColor}
@@ -166,15 +184,24 @@ def plot_anom_cyclic(dfA, dfB = pd.DataFrame(), # one or two dataframes consisti
         ax.bar(barAngles, dfA.reference, width=barWidth, alpha=alpha, color=refColor)
         ### anomalies
         ax.bar(barAngles, dfA.anomaly, width=anomWidth, alpha=alpha, color=(dfA.anomaly > 0).map(PosNegCol), bottom = dfA.reference)
+        if with_sd:
+            ### standard deviations
+            ax.bar(barAngles, 2*dfA.sd, width=sdWidth, alpha=alpha, color=sdColor, bottom=dfA.reference-dfA.sd)
     else:
         ### reference values A
         axA.bar(barAngles, dfA.reference, width=barWidth, alpha=alpha, color=refColor)
         ### anomalies A
         axA.bar(barAngles, dfA.anomaly, width=anomWidth, alpha=alpha, color=(dfA.anomaly > 0).map(PosNegCol), bottom = dfA.reference)
+        if with_sd:
+            ### standard deviations A
+            ax.bar(barAngles, 2*dfA.sd, width=sdWidth, alpha=alpha, color=sdColor, bottom=dfA.reference-dfA.sd)
         ### reference values B
         axB.bar(barAngles, dfB.reference, width=barWidth, alpha=alpha, color=refColor)
         ### anomalies B
         axB.bar(barAngles, dfB.anomaly, width=anomWidth, alpha=alpha, color=(dfB.anomaly > 0).map(PosNegCol), bottom = dfB.reference)
+        if with_sd:
+            ### standard deviations B
+            ax.bar(barAngles, 2*dfB.sd, width=sdWidth, alpha=alpha, color=sdColor, bottom=dfB.reference-dfB.sd)
     #################################
     
     ### pie chart

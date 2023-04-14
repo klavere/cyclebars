@@ -9,8 +9,10 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
                         labels: str = None, # the name of the column containig the labels for the bins. Defaults to column 0 of your dataframe.
                         values_a:  str = None, # the name of the column containig the values (a). Anomalies will be calculated as the difference between values and reference_values. Defaults to column 1.
                         reference_values_a: str = None, # the name of the column containing the reference values (a). Anomalies will be calculated as the difference between values and reference_values. Defaults to column 2.
+                        reference_standard_deviation_a: str = None, # the name of the column containing standard deviation values for reference values (a).
                         values_b:  str = None, # the name of the column containig the values (b). Anomalies will be calculated as the difference between values and reference_values.
                         reference_values_b: str = None, # the name of the column containing the reference values (b). Anomalies will be calculated as the difference between values and reference_values.
+                        reference_standard_deviation_b: str = None, # the name of the column containing standard deviation values for reference values (b).
                         
                         ref_total: float = 0, # a global maximum for reference, determines the size of the pie chart in the middle of the plot.
                         ref_maximum: float = None, # a reference maximum, to determine the scale of the bar plots.
@@ -22,8 +24,9 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
                         color_negative_anomalies = '#404040', # custom color for negative anomalies
                         color_positive_anomalies = '#1a9641', # custom color for positive anomalies
                         color_reference_values = '#BFBFBF', # custom color for reference values
+                        color_standard_deviation = 'grey', # custom color for standard deviation
                         accentcolor = 'white', # custom color for accent ring in cyclic plot #(and accent line in horizontal plot)
-                        
+
                         middle_labels = False, # deafult: the labels appear between the bars, like on a clock. If set to True, the labels and ticks are plotted in the middle of each bar.
                         
                         theta_offset = -pi,
@@ -52,6 +55,8 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
     df_a['value'] = data[[values_a]].copy()
     df_a['reference'] = data[[reference_values_a]].copy()
     df_a['anomaly'] = df_a.value - df_a.reference
+    if reference_standard_deviation_a:
+        df_a['sd'] = data[[reference_standard_deviation_a]].copy()
 
     if values_b and reference_values_b:
         df_b = pd.DataFrame()    
@@ -60,6 +65,8 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
         df_b['reference'] = data[[reference_values_b]].copy()
         df_b['anomaly'] = df_b.value - df_b.reference
         dual = True
+        if reference_standard_deviation_b:
+            df_b['sd'] = data[[reference_standard_deviation_b]].copy()
     else:
         df_b = pd.DataFrame()
         dual = False
@@ -118,6 +125,7 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
             posColor = color_positive_anomalies,
             refColor = color_reference_values,
             accentcolor = accentcolor,
+            sdColor = color_standard_deviation,
             thetaOffset = theta_offset,
             thetaDirection = theta_direction,
             pieOffset = pie_offset,
@@ -136,6 +144,7 @@ def cyclebars_anomalies(data: pd.DataFrame, # a dataframe containing all data to
             posColor = color_positive_anomalies,
             refColor = color_reference_values,
             accentcolor = accentcolor,
+            sdColor = color_standard_deviation,
             middleLabels = middle_labels,
             plot_legend = plot_legends,
         )
